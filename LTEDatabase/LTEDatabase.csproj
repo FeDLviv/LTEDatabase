@@ -128,8 +128,15 @@
     <Compile Include="Model\wiloCharacteristics.cs" />
     <Compile Include="Model\wiloRotors.cs" />
     <Compile Include="Model\wiloWheels.cs" />
+    <Compile Include="View\Control\MotorRowDetails.xaml.cs">
+      <DependentUpon>MotorRowDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Converter\DateConverter.cs" />
     <Compile Include="View\Converter\ForegroundNullConverter.cs" />
+    <Page Include="View\Control\MotorRowDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

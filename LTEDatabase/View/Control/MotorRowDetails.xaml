@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="LTEDatabase.View.Control.MotorRowDetails"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LTEDatabase.View.Control"
+             xmlns:converter="clr-namespace:LTEDatabase.View.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="200">
+    <UserControl.Resources>
+        <Style TargetType="Expander">
+            <Setter Property="BorderBrush" Value="DarkGray" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Margin" Value="2" />
+            <Style.Triggers>
+                <Trigger Property="IsExpanded" Value="True">
+                    <Setter Property="BorderBrush" Value="Crimson"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <converter:DateConverter x:Key="DateConverter" />
+        <converter:VisibilityConverter x:Key="VisibilityConverter" />
+    </UserControl.Resources>
+    <ItemsControl HorizontalAlignment="Left">
+        <Expander Header="Переміщення:" Visibility="{Binding Path=motors_lte_history.Count, Converter={StaticResource VisibilityConverter}}">
+            <ItemsControl ItemsSource="{Binding Path=motors_lte_history}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="-" Margin="0, 0, 5, 0"/>
+                            <TextBlock Text="{Binding type}" Margin="0, 0, 5, 0"/>
+                            <TextBlock Text="{Binding address}" Margin="0, 0, 10, 0"/>
+                            <TextBlock Text="знятий" Margin="0, 0, 5, 0"/>
+                            <TextBlock Text="{Binding dateTrash, Converter={StaticResource DateConverter}}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Expander>
+        <Expander Header="Ремонти:" Visibility="{Binding Path=motorRepairs.Count, Converter={StaticResource VisibilityConverter}}">
+            <ItemsControl ItemsSource="{Binding Path=motorRepairs}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Expander>
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding dateRepair, Converter={StaticResource DateConverter}}" Margin="0, 0, 10, 0"/>
+                                    <TextBlock Text="{Binding typeRepair}" />
+                                </StackPanel>
+                            </Expander.Header>
+                            <TextBlock Text="{Binding Path=notes}" />
+                        </Expander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Expander>
+        <Expander Header="Запасні частини:" Visibility="{Binding Path=idWiloArt, Converter={StaticResource VisibilityConverter}}">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=wiloCharacteristics.type}"></TextBlock>
+            </StackPanel>
+        </Expander>
+    </ItemsControl>
+</UserControl>
