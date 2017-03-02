@@ -45,7 +45,7 @@ namespace LTEDatabase.ViewModel
             Console.WriteLine("First Local={0}", time.ElapsedMilliseconds);
 
             time.Restart();
-            context.motors_lte.Load();
+            context.motors_lte.Include("missions").Load();
             time.Stop();
             Console.WriteLine("Second Load={0}", time.ElapsedMilliseconds);
 

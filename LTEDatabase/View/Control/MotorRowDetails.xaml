@@ -4,10 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LTEDatabase.View.Control"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:converter="clr-namespace:LTEDatabase.View.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="200">
     <UserControl.Resources>
+        <CollectionViewSource x:Key="SortRepairs" Source="{Binding Path=motorRepairs}" >
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="dateRepair" Direction="Descending" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="SortHistory" Source="{Binding Path=motors_lte_history}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="dateTrash" Direction="Descending" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
         <Style TargetType="Expander">
             <Setter Property="BorderBrush" Value="DarkGray" />
             <Setter Property="Padding" Value="5" />
@@ -23,7 +34,7 @@
     </UserControl.Resources>
     <ItemsControl HorizontalAlignment="Left">
         <Expander Header="Переміщення:" Visibility="{Binding Path=motors_lte_history.Count, Converter={StaticResource VisibilityConverter}}">
-            <ItemsControl ItemsSource="{Binding Path=motors_lte_history}">
+            <ItemsControl ItemsSource="{Binding Source={StaticResource SortHistory}}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -38,7 +49,7 @@
             </ItemsControl>
         </Expander>
         <Expander Header="Ремонти:" Visibility="{Binding Path=motorRepairs.Count, Converter={StaticResource VisibilityConverter}}">
-            <ItemsControl ItemsSource="{Binding Path=motorRepairs}">
+            <ItemsControl ItemsSource="{Binding Source={StaticResource SortRepairs}}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Expander>
