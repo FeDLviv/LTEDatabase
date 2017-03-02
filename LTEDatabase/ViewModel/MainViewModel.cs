@@ -9,6 +9,7 @@ using System.Text;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Data;
 
 namespace LTEDatabase.ViewModel
 {
@@ -62,6 +63,8 @@ namespace LTEDatabase.ViewModel
             selectedObjectsLeaf = new MyCommand(DoSelectedObjectsList);
             exitCommand = new MyCommand(DoExitCommand);
 
+            CollectionViewSource.GetDefaultView(MotorsLTE).Filter = (x) => { return false; };
+
         }
 
         private void DoSelectedObjectsList(object obj)
@@ -69,7 +72,7 @@ namespace LTEDatabase.ViewModel
             objects temp = obj as objects;
             if (temp != null)
             {
-                (System.Windows.Data.CollectionViewSource.GetDefaultView(MotorsLTE)).Filter = (x) =>
+                (CollectionViewSource.GetDefaultView(MotorsLTE)).Filter = (x) =>
                 {
                     motors_lte i = x as motors_lte;
                     if (i != null && i.idObject == temp.idObject)
