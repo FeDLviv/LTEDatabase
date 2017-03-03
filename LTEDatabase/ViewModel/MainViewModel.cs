@@ -10,19 +10,39 @@ using System.Data.Entity;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Data;
+using System.ComponentModel;
 
-namespace LTEDatabase.ViewModel
+namespace LTEDatabase.ViewModel 
 {
-    class MainViewModel
+    class MainViewModel : INotifyPropertyChanged
     {
         private DBContext context;
 
         private MyCommand selectedObjectsLeaf;
         private MyCommand exitCommand;
+
+        private objects selectedObject;
                 
         public ObservableCollection<objects> Objects { get; set; }
         public ObservableCollection<motors_lte> MotorsLTE { get; set; }
         public ObservableCollection<Region> Regions { get; set; }
+
+        public objects SelectedObject 
+        { 
+            get 
+            {
+                return selectedObject; 
+            }
+
+            set 
+            {
+                if(selectedObject != value)
+                {
+                    selectedObject = value;
+                    OnPropertyChanged("SelectedObject");
+                }
+            }
+        }
 
         public MyCommand SelectedObjectsLeaf { get { return selectedObjectsLeaf; } }
         public MyCommand ExitCommand { get { return exitCommand; } }
@@ -62,20 +82,20 @@ namespace LTEDatabase.ViewModel
 
             selectedObjectsLeaf = new MyCommand(DoSelectedObjectsList);
             exitCommand = new MyCommand(DoExitCommand);
-
+           
+            //!BUG NOT COMMENT!
             CollectionViewSource.GetDefaultView(MotorsLTE).Filter = (x) => { return false; };
-
         }
 
         private void DoSelectedObjectsList(object obj)
         {
-            objects temp = obj as objects;
-            if (temp != null)
+            SelectedObject = obj as objects;
+            if (SelectedObject != null)
             {
                 (CollectionViewSource.GetDefaultView(MotorsLTE)).Filter = (x) =>
                 {
                     motors_lte i = x as motors_lte;
-                    if (i != null && i.idObject == temp.idObject)
+                    if (i != null && i.idObject == SelectedObject.idObject)
                     {
                         return true;
                     }
@@ -85,11 +105,25 @@ namespace LTEDatabase.ViewModel
                     }
                 };
             }
+            else
+            {
+                CollectionViewSource.GetDefaultView(MotorsLTE).Filter = (x) => { return false; };
+            }
         }
 
         private void DoExitCommand(object obj)
         {
             context.Dispose();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         private void CreateRegions()
