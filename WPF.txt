@@ -1,6 +1,6 @@
 XAML (разметка)
 
-BINDING (Source, ElementName, Path, BindingMode, UpdateSourceTrigger, TargetNullValue, RelativeSource, ValidationRules, ValidatesOnExceptions, ValidatesOnOataErrors, StringFormat) 
+BINDING (Source, ElementName, Path, BindingMode, UpdateSourceTrigger, TargetNullValue, RelativeSource, ValidationRules, ValidatesOnExceptions, ValidatesOnOataErrors, NotifyOnTargetUpdated, NotifyOnSourceUpdated, StringFormat) 
 	    (IValueConverter) 
 	    (CompositeCollection, MultiBinding, PriorityBinding)
 	    (привязка)
@@ -26,6 +26,6 @@ TEMPLATE
 
 RESOURCEDICTIONARY
 
-ANIMATION
+ANIMATION (From, To, By, Duration, BeginTime, AutoReverse, RepeatBehavior)
 
 MVVM

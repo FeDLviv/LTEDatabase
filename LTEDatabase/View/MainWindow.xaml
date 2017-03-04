@@ -10,7 +10,20 @@
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
-    <Window.Resources>
+    <Window.Resources>   
+        <Style TargetType="TextBlock">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="00:00:01" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>      
         <Style TargetType="GridSplitter">
             <Setter Property="BorderBrush" Value="Black" />
             <Setter Property="BorderThickness" Value="1" />
@@ -64,9 +77,9 @@
         <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Vertical"  
                     Visibility="{Binding Path=SelectedObject, Converter={StaticResource VisibilityConverter}}">
             <TextBlock HorizontalAlignment="Center" FontWeight="Bold">
-                <Run Text="{Binding Path=SelectedObject.type}" />
+                <Run Text="{Binding Path=SelectedObject.type, NotifyOnTargetUpdated=True}" />
                 <Run Text=" " />
-                <Run Text="{Binding Path=SelectedObject.address}" />
+                <Run Text="{Binding Path=SelectedObject.address, NotifyOnTargetUpdated=True}" />
             </TextBlock>
             <ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <DataGrid AlternatingRowBackground = "LightGray"  AlternationCount = "2" FrozenColumnCount="4" 
