@@ -18,14 +18,10 @@ namespace LTEDatabase.ViewModel
     {
         private DBContext context;
 
+        private objects selectedObject;
+
         private MyCommand selectedObjectsLeaf;
         private MyCommand exitCommand;
-
-        private objects selectedObject;
-                
-        public ObservableCollection<objects> Objects { get; set; }
-        public ObservableCollection<motors_lte> MotorsLTE { get; set; }
-        public ObservableCollection<Region> Regions { get; set; }
 
         public objects SelectedObject 
         { 
@@ -46,6 +42,10 @@ namespace LTEDatabase.ViewModel
 
         public MyCommand SelectedObjectsLeaf { get { return selectedObjectsLeaf; } }
         public MyCommand ExitCommand { get { return exitCommand; } }
+
+        public ObservableCollection<objects> Objects { get; set; }
+        public ObservableCollection<motors_lte> MotorsLTE { get; set; }
+        public ObservableCollection<Region> Regions { get; set; }
         
         public MainViewModel()
         {

@@ -11,7 +11,7 @@ DependencyProperty (INotifyPropertyChnaged, DependencyObject)
 RoutedEvent (маршрутизируемые события)
 
 Trigger(триггер свойств, триггер данных, триггер события) 
-	(Trigger, MultiTrigger, DataTrigger, MultiDataTrigger)
+	(Trigger, MultiTrigger, DataTrigger, MultiDataTrigger, EventTrigger)
 
 Command (ICommand)
 

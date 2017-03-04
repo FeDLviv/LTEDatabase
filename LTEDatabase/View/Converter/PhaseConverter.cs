@@ -7,25 +7,18 @@ using System.Windows.Data;
 
 namespace LTEDatabase.View.Converter
 {
-    class DateConverter : IValueConverter
+    class PhaseConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            try
+            bool? temp = value as bool?;
+            if (temp != null)
             {
-                DateTime temp = (DateTime) value;
-                if (temp != null)
-                {
-                    return temp.ToString(parameter == null ? "dd-MM-yyyy" : parameter.ToString());
-                }
-                else
-                {
-                    return null;
-                }
+                return temp.Value? "3~" : "1~";
             }
-            catch (Exception)
+            else
             {
-                return null;
+                return value;
             }
         }
 

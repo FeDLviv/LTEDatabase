@@ -14,7 +14,7 @@ namespace LTEDatabase.View.Converter
         {
             if (value == null)
             {
-                return new SolidColorBrush(Colors.DarkOrange);
+                return new SolidColorBrush(Colors.DarkGray);
             }
             else 
             {

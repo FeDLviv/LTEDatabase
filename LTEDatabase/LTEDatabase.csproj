@@ -147,6 +147,7 @@
     </Compile>
     <Compile Include="Command\MyCommand.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="View\Converter\PhaseConverter.cs" />
     <Compile Include="View\Converter\SpeedConverter.cs" />
     <Compile Include="View\Converter\VisibilityConverter.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
