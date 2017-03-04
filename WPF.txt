@@ -1,29 +1,31 @@
-XAML
+XAML (СЂР°Р·РјРµС‚РєР°)
 
-Binding (Source, ElementName, Path, BindingMode, UpdateSourceTrigger, TargetNullValue, RelativeSource, ValidationRules, ValidatesOnExceptions, ValidatesOnOataErrors, StringFormat) 
-	(IValueConverter) 
-	(CompositeCollection, MultiBinding, PriorityBinding)
-	(привязка)
+BINDING (Source, ElementName, Path, BindingMode, UpdateSourceTrigger, TargetNullValue, RelativeSource, ValidationRules, ValidatesOnExceptions, ValidatesOnOataErrors, StringFormat) 
+	    (IValueConverter) 
+	    (CompositeCollection, MultiBinding, PriorityBinding)
+	    (РїСЂРёРІСЏР·РєР°)
 
-DependencyProperty (INotifyPropertyChnaged, DependencyObject) 
-	(свойства зависимости)
+DEPENDENCYPROPERTY (INotifyPropertyChnaged, DependencyObject) 
+				   (СЃРІРѕР№СЃС‚РІР° Р·Р°РІРёСЃРёРјРѕСЃС‚Рё)
 
-RoutedEvent (маршрутизируемые события)
+ROUTEDEVENT (РјР°СЂС€СЂСѓС‚РёР·РёСЂСѓРµРјС‹Рµ СЃРѕР±С‹С‚РёСЏ)
 
-Trigger(триггер свойств, триггер данных, триггер события) 
-	(Trigger, MultiTrigger, DataTrigger, MultiDataTrigger, EventTrigger)
+TRIGGER (Trigger, MultiTrigger, DataTrigger, MultiDataTrigger, EventTrigger)
+		(С‚СЂРёРіРіРµСЂ СЃРІРѕР№СЃС‚РІ, С‚СЂРёРіРіРµСЂ РґР°РЅРЅС‹С…, С‚СЂРёРіРіРµСЂ СЃРѕР±С‹С‚РёСЏ) 
 
-Command (ICommand)
+COMMAND (ICommand)
 
-Style (x:Key, TargetType)
+STYLE (x:Key, TargetType, BasedOn)
 
-Resources
+RESOURCES
 
-Control(ContentControl, ItemsControl) 
-	(однодетные элементы управления, многодетные элементы управления, диапазонные элементы управления, все остальное)
+CONTROL(ContentControl, ItemsControl) 
+	   (РѕРґРЅРѕРґРµС‚РЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ СѓРїСЂР°РІР»РµРЅРёСЏ, РјРЅРѕРіРѕРґРµС‚РЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ СѓРїСЂР°РІР»РµРЅРёСЏ, РґРёР°РїР°Р·РѕРЅРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ СѓРїСЂР°РІР»РµРЅРёСЏ, РІСЃРµ РѕСЃС‚Р°Р»СЊРЅРѕРµ)
+	   
+TEMPLATE
 
-ResourceDictionary
+RESOURCEDICTIONARY
 
-Animation
+ANIMATION
 
 MVVM
