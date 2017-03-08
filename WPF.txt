@@ -1,4 +1,4 @@
-XAML (разметка)
+﻿XAML (разметка)
 
 BINDING (Source, ElementName, Path, BindingMode, UpdateSourceTrigger, TargetNullValue, RelativeSource, ValidationRules, ValidatesOnExceptions, ValidatesOnOataErrors, NotifyOnTargetUpdated, NotifyOnSourceUpdated, StringFormat) 
 	    (IValueConverter) 
@@ -26,6 +26,7 @@ TEMPLATE
 
 RESOURCEDICTIONARY
 
-ANIMATION (From, To, By, Duration, BeginTime, AutoReverse, RepeatBehavior)
+ANIMATION (From, To, By, Duration, BeginTime, AutoReverse, RepeatBehavior, FillBehavior, AccelerationRatio, DecelerationRatio, SpeedRatio)
+	      (Storyboard.TargetName, Storyboard.TargetProperty)
 
 MVVM
