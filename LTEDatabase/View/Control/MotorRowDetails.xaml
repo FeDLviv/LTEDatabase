@@ -78,47 +78,51 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Path=wiloCharacteristics.type}" FontWeight="Bold" />
-                <TextBlock Grid.Row="1" Grid.Column="0" Margin="3, 3, 20, 3">
+                <TextBlock Grid.Row="0" Grid.Column="0" Margin="3, 10" FontWeight="Bold" Text="{Binding Path=wiloCharacteristics.type}" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Margin="3">
                     <Run FontStyle="Italic" Text="артикул насоса: " />
                     <Run FontWeight="Bold" Text="{Binding Path=wiloCharacteristics.idWiloArt}" />
                 </TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="0" Margin="3, 3, 20, 3">
+                <TextBlock Grid.Row="2" Grid.Column="0" Margin="3">
                     <Run FontStyle="Italic" Text="старий артикул насоса: " />
-                    <Run FontWeight="Bold" Text="{Binding Path=wiloCharacteristics.oldIdWiloArt, TargetNullValue=-}" />
+                    <Run Text="{Binding Path=wiloCharacteristics.oldIdWiloArt, TargetNullValue=-}" />
                 </TextBlock>
-                <TextBlock Grid.Row="1" Grid.Column="1" Margin="3, 3, 20, 3">
+                <TextBlock Grid.Row="1" Grid.Column="1" Margin="20, 3">
                     <Run FontStyle="Italic" Text="монтажна висота: " />
-                    <Run FontWeight="Bold" Text="{Binding Path=wiloCharacteristics.height}" />
+                    <Run Text="{Binding Path=wiloCharacteristics.height}" />
                 </TextBlock>
-                <TextBlock Grid.Row="2" Grid.Column="1" Margin="3, 3, 20, 3">
+                <TextBlock Grid.Row="2" Grid.Column="1" Margin="20, 3">
                     <Run FontStyle="Italic" Text="діаметр(фланець/різьба): " />
-                    <Run FontWeight="Bold" Text="{Binding Path=wiloCharacteristics.diametr}" />
+                    <Run Text="{Binding Path=wiloCharacteristics.diametr}" />
                 </TextBlock>
-                <TextBlock Grid.Row="3" Grid.Column="1" Margin="3, 3, 20, 3">
+                <TextBlock Grid.Row="3" Grid.Column="1" Margin="20, 3">
                     <Run FontStyle="Italic" Text="конденсатор: " />
-                    <Run FontWeight="Bold" Text="{Binding Path=wiloCharacteristics.capacitor, TargetNullValue=-}" />
+                    <Run Text="{Binding Path=wiloCharacteristics.capacitor, TargetNullValue=-}" />
                 </TextBlock>
-                <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="3, 3, 20, 3">
+                <Separator Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" />
+                <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="3">
                     <Run FontStyle="Italic" Text="артикул ротора: " />
                     <Run FontWeight="Bold" Text="{Binding Path=wiloCharacteristics.idRotor}" />
                 </TextBlock>
-                <TextBlock Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="3, 3, 20, 3">
+                <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="3">
                     <Run FontStyle="Italic" Text="назва ротора: " />
-                    <Run FontWeight="Bold" Text="{Binding Path=wiloCharacteristics.wiloRotors.type}" />
+                    <Run Text="{Binding Path=wiloCharacteristics.wiloRotors.type}" />
                 </TextBlock>
-                <TextBlock Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="3, 3, 20, 3">
+                <Separator Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" />
+                <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="3">
                     <Run FontStyle="Italic" Text="артикул крильчатки: " />
                     <Run FontWeight="Bold" Text="{Binding Path=wiloCharacteristics.idWheel, TargetNullValue=-}" />
                 </TextBlock>
-                <TextBlock Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Margin="3, 3, 20, 3">
+                <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="3">
                     <Run FontStyle="Italic" Text="назва крильчатки: " />
-                    <Run FontWeight="Bold" Text="{Binding Path=wiloCharacteristics.wiloWheels.type}" />
+                    <Run Text="{Binding Path=wiloCharacteristics.wiloWheels.type}" />
                 </TextBlock>
             </Grid>
         </Expander>

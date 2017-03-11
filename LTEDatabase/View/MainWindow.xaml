@@ -5,13 +5,13 @@
         xmlns:vm="clr-namespace:LTEDatabase.ViewModel"
         xmlns:converter="clr-namespace:LTEDatabase.View.Converter"
         xmlns:control="clr-namespace:LTEDatabase.View.Control"
-        Height="400" Width="600" WindowStartupLocation="CenterScreen" Title="Двигуни, де ж вони-5" 
+        WindowState="Maximized" Title="Двигуни, де ж вони-5" 
         TextOptions.TextFormattingMode="Display">
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
     <Window.Resources>   
-        <Style TargetType="GridSplitter">
+        <Style TargetType="{x:Type GridSplitter}">
             <Setter Property="BorderBrush" Value="Black" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>
@@ -70,8 +70,8 @@
             </TreeView.Triggers>
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="SelectedItemChanged">
-                    <i:InvokeCommandAction Command="{Binding Path=SelectedObjectsLeaf}" CommandParameter="{Binding Path=SelectedItem, 
-                                           ElementName=TreeObjects}" />
+                    <i:InvokeCommandAction Command="{Binding Path=SelectedObjectsLeaf}" CommandParameter="{Binding ElementName=TreeObjects, 
+                                           Path=SelectedItem}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>         
         </TreeView>
@@ -85,7 +85,7 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock x:Name="TextObject" HorizontalAlignment="Center" FontWeight="Bold" FontSize="14" Grid.Row="0" Grid.Column="0">
+            <TextBlock x:Name="TextObject" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold" FontSize="14">
                 <Run Text="{Binding Path=SelectedObject.type, NotifyOnTargetUpdated=True}" />
                 <Run Text=" " />
                 <Run Text="{Binding Path=SelectedObject.address, NotifyOnTargetUpdated=True}" />

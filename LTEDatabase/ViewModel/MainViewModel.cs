@@ -62,14 +62,11 @@ namespace LTEDatabase.ViewModel
             }
         }
 
-        private MyCommand selectedObjectsLeaf;
-        public MyCommand SelectedObjectsLeaf { get { return selectedObjectsLeaf; } }
+        public MyCommand SelectedObjectsLeaf { set; get; }
 
-        private MyCommand updateObjectsCommand;
-        public MyCommand UpdateObjectsCommand { get { return updateObjectsCommand; } }
+        public MyCommand UpdateObjectsCommand { set; get; }
 
-        private MyCommand exitCommand;
-        public MyCommand ExitCommand { get { return exitCommand; } }
+        public MyCommand ExitCommand { set; get; }
         
         public MainViewModel()
         {
@@ -81,9 +78,9 @@ namespace LTEDatabase.ViewModel
             
             //time.Restart();
           
-            selectedObjectsLeaf = new MyCommand(DoSelectedObjectsList);
-            updateObjectsCommand = new MyCommand(DoUpdateObjectsCommand);
-            exitCommand = new MyCommand(DoExitCommand);
+            SelectedObjectsLeaf = new MyCommand(DoSelectedObjectsList);
+            UpdateObjectsCommand = new MyCommand(DoUpdateObjectsCommand);
+            ExitCommand = new MyCommand(DoExitCommand);
         }
 
         private void DoSelectedObjectsList(object obj)
