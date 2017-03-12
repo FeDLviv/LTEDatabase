@@ -15,6 +15,19 @@
             <Setter Property="BorderBrush" Value="Black" />
             <Setter Property="BorderThickness" Value="1" />
         </Style>
+        <Style TargetType="{x:Type DataGrid}">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="00:00:01.5" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="{x:Type DataGridRow}">
             <EventSetter Event="MouseDoubleClick" Handler="RowDoubleClick"/>
         </Style>
@@ -61,8 +74,6 @@
                                 <DoubleAnimation From="0" Duration="00:00:00.4" />
                                 <DoubleAnimation To="18" BeginTime="00:00:00.4" Duration="00:00:00.2" DecelerationRatio="0.5" 
                                                  AutoReverse="True" />
-                                <DoubleAnimation Storyboard.TargetName="DataGridObject" Storyboard.TargetProperty="Opacity" From="0" 
-                                                 To="1" Duration="00:00:01" />
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger.Actions>
@@ -86,13 +97,15 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <TextBlock x:Name="TextObject" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold" FontSize="14">
-                <Run Text="{Binding Path=SelectedObject.type, NotifyOnTargetUpdated=True}" />
+                <Run Text="{Binding Path=SelectedObject.type}" />
                 <Run Text=" " />
-                <Run Text="{Binding Path=SelectedObject.address, NotifyOnTargetUpdated=True}" />
+                <Run Text="{Binding Path=SelectedObject.address}" />
             </TextBlock>
             <DataGrid x:Name="DataGridObject" Grid.Row="1" Grid.Column="0" AlternatingRowBackground = "LightGray" 
                       AlternationCount = "2" FrozenColumnCount="4" AutoGenerateColumns="False" IsReadOnly="True" 
-                      ItemsSource="{Binding Path=Motors}" RowDetailsVisibilityMode="Collapsed">
+                      ItemsSource="{Binding Path=Motors, NotifyOnTargetUpdated=True}"  
+                      Visibility="{Binding Path=Motors, Converter={StaticResource VisibilityConverter}}"
+                      RowDetailsVisibilityMode="Collapsed">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding idMotorsLTE}" Header="ID" />        
                     <DataGridTextColumn Binding="{Binding missions.mission}" Header="ПРИЗНАЧЕННЯ" />

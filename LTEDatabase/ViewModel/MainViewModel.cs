@@ -11,11 +11,14 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace LTEDatabase.ViewModel 
 {
     class MainViewModel : BaseViewModel
     {
+        private object locked = new object();
+
         private ObjectsViewModel objects;
         public ObjectsViewModel Objects
         {
@@ -86,13 +89,21 @@ namespace LTEDatabase.ViewModel
         private void DoSelectedObjectsList(object obj)
         {
             SelectedObject = obj as objects;
-            if (SelectedObject != null)
+            Motors = null;
+            Task.Factory.StartNew((temp) =>
             {
-                Motors = new ObservableCollection<motors_lte>(
-                        (from x in Database.GetContext().motors_lte
-                         where x.idObject == SelectedObject.idObject
-                         select x).Include("missions").AsNoTracking().ToList());
-            }
+                lock (locked)
+                {
+                    objects selectedObject = temp as objects;
+                    if (temp != null && temp == SelectedObject)
+                    {
+                        Motors = new ObservableCollection<motors_lte>(
+                            (from x in Database.GetContext().motors_lte
+                            where x.idObject == selectedObject.idObject
+                            select x).Include("missions").AsNoTracking().ToList());
+                    }
+                }
+             }, SelectedObject);
         }
 
         private void DoUpdateObjectsCommand(object obj)
