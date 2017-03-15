@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:vm="clr-namespace:LTEDatabase.ViewModel"
         xmlns:converter="clr-namespace:LTEDatabase.View.Converter"
         xmlns:control="clr-namespace:LTEDatabase.View.Control"
@@ -28,9 +29,6 @@
                 </EventTrigger>
             </Style.Triggers>
         </Style>
-        <Style TargetType="{x:Type DataGridRow}">
-            <EventSetter Event="MouseDoubleClick" Handler="RowDoubleClick"/>
-        </Style>
         <DataTemplate x:Key="objectTemplate">
             <StackPanel Orientation="Horizontal">
                 <Image Width="24" Height="24" Stretch="Fill" Source="/LTEDatabase;component/images/object.png" />
@@ -50,7 +48,7 @@
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding Path=ExitCommand}" />
+            <ei:CallMethodAction MethodName="DoMainWindowClosing" TargetObject="{Binding}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid>
@@ -103,9 +101,12 @@
             </TextBlock>
             <DataGrid x:Name="DataGridObject" Grid.Row="1" Grid.Column="0" AlternatingRowBackground = "LightGray" 
                       AlternationCount = "2" FrozenColumnCount="4" AutoGenerateColumns="False" IsReadOnly="True" 
-                      ItemsSource="{Binding Path=Motors, NotifyOnTargetUpdated=True}"  
-                      Visibility="{Binding Path=Motors, Converter={StaticResource VisibilityConverter}}"
-                      RowDetailsVisibilityMode="Collapsed">
+                      RowDetailsVisibilityMode="Collapsed" ItemsSource="{Binding Path=Motors, NotifyOnTargetUpdated=True}"  
+                      Visibility="{Binding Path=Motors, Converter={StaticResource VisibilityConverter}}">
+                <DataGrid.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding Path=ShowDetailsCommand}" 
+                                  CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" />
+                </DataGrid.InputBindings>
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding idMotorsLTE}" Header="ID" />        
                     <DataGridTextColumn Binding="{Binding missions.mission}" Header="ПРИЗНАЧЕННЯ" />

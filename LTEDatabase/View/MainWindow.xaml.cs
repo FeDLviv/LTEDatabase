@@ -23,17 +23,5 @@ namespace LTEDatabase.View
         {
             InitializeComponent();
         }
-
-        private void RowDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                DataGridRow temp = sender as DataGridRow;
-                if (temp != null)
-                {
-                    temp.DetailsVisibility = (temp.DetailsVisibility == Visibility.Collapsed) ? Visibility.Visible : Visibility.Collapsed;
-                }
-            }
-        }
     }
 }

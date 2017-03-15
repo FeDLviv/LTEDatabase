@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace LTEDatabase.ViewModel 
 {
@@ -66,11 +67,9 @@ namespace LTEDatabase.ViewModel
         }
 
         public MyCommand SelectedObjectsLeaf { set; get; }
-
+        public MyCommand ShowDetailsCommand { set; get; }
         public MyCommand UpdateObjectsCommand { set; get; }
-
-        public MyCommand ExitCommand { set; get; }
-        
+               
         public MainViewModel()
         {
             System.Diagnostics.Stopwatch time = new System.Diagnostics.Stopwatch();
@@ -82,8 +81,8 @@ namespace LTEDatabase.ViewModel
             //time.Restart();
           
             SelectedObjectsLeaf = new MyCommand(DoSelectedObjectsList);
+            ShowDetailsCommand = new MyCommand(DoShowDetailsCommand);
             UpdateObjectsCommand = new MyCommand(DoUpdateObjectsCommand);
-            ExitCommand = new MyCommand(DoExitCommand);
         }
 
         private void DoSelectedObjectsList(object obj)
@@ -94,16 +93,39 @@ namespace LTEDatabase.ViewModel
             {
                 lock (locked)
                 {
-                    objects selectedObject = temp as objects;
-                    if (temp != null && temp == SelectedObject)
+                    try
                     {
-                        Motors = new ObservableCollection<motors_lte>(
-                            (from x in Database.GetContext().motors_lte
-                            where x.idObject == selectedObject.idObject
-                            select x).Include("missions").AsNoTracking().ToList());
+                        objects selectedObject = temp as objects;
+                        if (temp != null && temp == SelectedObject)
+                        {
+                            Motors = new ObservableCollection<motors_lte>(
+                                (from x in Database.GetContext().motors_lte
+                                 where x.idObject == selectedObject.idObject
+                                 select x).Include("missions").AsNoTracking().ToList());
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Application.Current.Dispatcher.Invoke(new Action(() => 
+                        { 
+                            MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error); 
+                        }));                       
                     }
                 }
              }, SelectedObject);
+        }
+
+        private void DoShowDetailsCommand(object obj)
+        {
+            System.Windows.Controls.DataGrid table = obj as System.Windows.Controls.DataGrid;
+            if (table != null)
+            {
+                System.Windows.Controls.DataGridRow row = table.ItemContainerGenerator.ContainerFromIndex(table.SelectedIndex) as System.Windows.Controls.DataGridRow;
+                if (row != null)
+                {
+                    row.DetailsVisibility = (row.DetailsVisibility == Visibility.Collapsed) ? Visibility.Visible : Visibility.Collapsed;
+                }
+            }
         }
 
         private void DoUpdateObjectsCommand(object obj)
@@ -111,9 +133,21 @@ namespace LTEDatabase.ViewModel
             Objects = new ObjectsViewModel();
         }
 
-        private void DoExitCommand(object obj)
+        public void DoMainWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Database.Close();
+            Window temp = sender as Window;
+            if (temp != null)
+            {
+                MessageBoxResult result = MessageBox.Show("Вийти з програми?", temp.Title, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    Database.Close();
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
         }
     }
 }
