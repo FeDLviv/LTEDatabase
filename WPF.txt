@@ -1,12 +1,14 @@
 ﻿XAML (разметка)
 
-BINDING (Source, ElementName, Path, BindingMode, UpdateSourceTrigger, TargetNullValue, RelativeSource, ValidationRules, ValidatesOnExceptions, ValidatesOnOataErrors, NotifyOnTargetUpdated, NotifyOnSourceUpdated, StringFormat) 
+BINDING (Source, ElementName, Path, BindingMode, UpdateSourceTrigger, TargetNullValue, RelativeSource, ValidationRules, ValidatesOnExceptions, ValidatesOnDataErrors, NotifyOnTargetUpdated, NotifyOnSourceUpdated, StringFormat) 
 	    (IValueConverter) 
 	    (CompositeCollection, MultiBinding, PriorityBinding)
 	    (привязка)
 
 DEPENDENCYPROPERTY (INotifyPropertyChnaged, DependencyObject) 
 				   (свойства зависимости)
+
+ATTACHEDPROPERTY
 
 ROUTEDEVENT (маршрутизируемые события)
 
