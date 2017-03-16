@@ -54,7 +54,6 @@ namespace LTEDatabase.ViewModel
                 {
                     var list = (from z in temp
                                 where z.region == region.Name && z.type == type.Name
-                                //orderby z.address
                                 select z).OrderBy((z => z), compare);
                     type.Objects = new ObservableCollection<objects>(list);
                 }
@@ -79,44 +78,40 @@ namespace LTEDatabase.ViewModel
             {
                 int point1 = x.address.IndexOf(',');
                 int point2 = y.address.IndexOf(',');
-
-                if (point1 != -1 && point2 != -1)
+                if (point1 != -1 || point2 != -1)
                 {
                     string street1 = x.address.Substring(0, point1);
                     string street2 = y.address.Substring(0, point2);
-
                     string other1 = x.address.Substring(point1 + 2, x.address.Length - (point1 + 2));
-                    string other2 = y.address.Substring(point2 + 2, y.address.Length - (point2 + 2));
-                    
+                    string other2 = y.address.Substring(point2 + 2, y.address.Length - (point2 + 2));               
                     int number1;
                     int number2;
-
-                    if (Int32.TryParse(other1, out number1) && Int32.TryParse(other2, out number2))
+                    if (street1.CompareTo(street2) == 0)
                     {
-                        if (street1.CompareTo(street2) == 0)
+                        if (Int32.TryParse(other1, out number1) && Int32.TryParse(other2, out number2))
                         {
-                            if (number1 > number2)
+                            return (number1 - number2);
+                        }
+                        else
+                        {
+                            string letter1 = System.Text.RegularExpressions.Regex.Replace(other1, "[0-9]", "");
+                            string letter2 = System.Text.RegularExpressions.Regex.Replace(other2, "[0-9]", "");
+                            if (Int32.TryParse(other1, out number1) && Int32.TryParse(other2.Substring(0, other2.Length - 1), out number2))
                             {
-                                return 1;
+                                return (number1 - number2);
                             }
-                            else if (number1 < number2)
+                            else if (Int32.TryParse(other2, out number2) && Int32.TryParse(other1.Substring(0, other1.Length - 1), out number1))
                             {
-                                return -1;
+                                return (number1 - number2);
+                            }
+                            else if (Int32.TryParse(other1.Substring(0, other1.Length - 1), out number1) && Int32.TryParse(other2.Substring(0, other2.Length - 1), out number2))
+                            {
+                                return (number1 - number2);
                             }
                         }
-                        return x.address.CompareTo(y.address);
                     }
-                    else
-                    { 
-                        //ДОПИСАТИ
-                    }
-                    //ДОПИСАТИ
-                    return x.address.CompareTo(y.address);
                 }
-                else
-                {
-                    return x.address.CompareTo(y.address);
-                }
+                return x.address.CompareTo(y.address);
             }
         }
     }
