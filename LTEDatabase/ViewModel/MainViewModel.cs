@@ -6,19 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Data;
-using System.ComponentModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Controls;
+using System.ComponentModel;
 
 namespace LTEDatabase.ViewModel 
 {
     class MainViewModel : BaseViewModel
     {
-        private object locked = new object();
+        private object locker = new object();
 
         private ObjectsViewModel objects;
         public ObjectsViewModel Objects
@@ -52,8 +53,8 @@ namespace LTEDatabase.ViewModel
             }
         }
 
-        private ObservableCollection<motors_lte> motors;
-        public ObservableCollection<motors_lte> Motors 
+        private Collection<motors_lte> motors;
+        public Collection<motors_lte> Motors 
         {
             get { return motors; }
             set 
@@ -66,9 +67,51 @@ namespace LTEDatabase.ViewModel
             }
         }
 
-        public MyCommand SelectedObjectsLeaf { set; get; }
-        public MyCommand ShowDetailsCommand { set; get; }
-        public MyCommand UpdateObjectsCommand { set; get; }
+        private Visibility isStartWork = Visibility.Collapsed;
+        public Visibility IsStartWork 
+        {
+            get { return isStartWork; }
+            set
+            {
+                if (isStartWork != value)
+                {
+                    isStartWork = value;
+                    OnPropertyChanged("IsStartWork");
+                }
+            }
+        }
+
+        private bool isSelectedObjectsLeaf = true;
+        public bool IsSelectedObjectsList 
+        {
+            get { return isSelectedObjectsLeaf; }
+            set
+            {
+                if (isSelectedObjectsLeaf != value)
+                {
+                    isSelectedObjectsLeaf = value;
+                    OnPropertyChanged("IsSelectedObjectsList");
+                }
+            }
+        }
+
+        private bool isUpdateObjectsCommand = true;
+        public bool IsUpdateObjectsCommand 
+        {
+            get { return isUpdateObjectsCommand; }
+            set
+            {
+                if (isUpdateObjectsCommand != value)
+                {
+                    isUpdateObjectsCommand = value;
+                    OnPropertyChanged("IsUpdateObjectsCommand");
+                }
+            }
+        }
+
+        public ICommand SelectedObjectsLeaf { set; get; }
+        public ICommand ShowDetailsCommand { set; get; }
+        public ICommand UpdateObjectsCommand { set; get; }
                
         public MainViewModel()
         {
@@ -80,61 +123,14 @@ namespace LTEDatabase.ViewModel
             
             //time.Restart();
           
-            SelectedObjectsLeaf = new MyCommand(DoSelectedObjectsList);
+            SelectedObjectsLeaf = new MyCommand(DoSelectedObjectsList, CanSelectedObjectsList);
             ShowDetailsCommand = new MyCommand(DoShowDetailsCommand);
-            UpdateObjectsCommand = new MyCommand(DoUpdateObjectsCommand);
-        }
-
-        private void DoSelectedObjectsList(object obj)
-        {
-            SelectedObject = obj as objects;
-            Motors = null;
-            Task.Factory.StartNew((temp) =>
-            {
-                lock (locked)
-                {
-                    try
-                    {
-                        objects selectedObject = temp as objects;
-                        if (temp != null && temp == SelectedObject)
-                        {
-                            Motors = new ObservableCollection<motors_lte>(
-                                (from x in Database.GetContext().motors_lte
-                                 where x.idObject == selectedObject.idObject
-                                 select x).Include("missions").AsNoTracking().ToList());
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Application.Current.Dispatcher.Invoke(new Action(() => 
-                        { 
-                            MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error); 
-                        }));                       
-                    }
-                }
-             }, SelectedObject);
-        }
-
-        private void DoShowDetailsCommand(object obj)
-        {
-            System.Windows.Controls.DataGrid table = obj as System.Windows.Controls.DataGrid;
-            if (table != null)
-            {
-                System.Windows.Controls.DataGridRow row = table.ItemContainerGenerator.ContainerFromIndex(table.SelectedIndex) as System.Windows.Controls.DataGridRow;
-                if (row != null)
-                {
-                    row.DetailsVisibility = (row.DetailsVisibility == Visibility.Collapsed) ? Visibility.Visible : Visibility.Collapsed;
-                }
-            }
-        }
-
-        private void DoUpdateObjectsCommand(object obj)
-        {
-            Objects = new ObjectsViewModel();
+            UpdateObjectsCommand = new MyCommand(DoUpdateObjectsCommand, CanUpdateObjectsCommand);
         }
 
         public void DoMainWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            //БАЖАНО ПЕРЕНЕСТИ В КОМАНДУ
             Window temp = sender as Window;
             if (temp != null)
             {
@@ -148,6 +144,101 @@ namespace LTEDatabase.ViewModel
                     e.Cancel = true;
                 }
             }
+        }
+
+        private void DoSelectedObjectsList(object obj)
+        {
+            //ПРОБЛЕМА ЗМІНИ АДРЕСИ ПРИ ПЕРШОМУ EXCEPTION
+            SelectedObject = obj as objects;
+            if (SelectedObject != null)
+            {
+                IsSelectedObjectsList = false;
+                IsStartWork = Visibility.Visible;
+                Motors = null;
+                Task.Factory.StartNew(UpdateMotors, SelectedObject);
+            }
+        }
+
+        private void UpdateMotors(object obj)
+        {
+            lock (locker)
+            {
+                try
+                {
+                    objects temp = obj as objects;
+                    if (temp != null && temp == SelectedObject)
+                    {
+                        Motors = new ObservableCollection<motors_lte>(
+                                 (from x in Database.GetContext().motors_lte
+                                 where x.idObject == selectedObject.idObject
+                                 select x).Include("missions").AsNoTracking().ToList());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    IsStartWork = Visibility.Collapsed;
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }));
+                }
+                finally
+                {
+                    IsStartWork = Visibility.Collapsed;
+                    IsSelectedObjectsList = true;
+                }
+            }
+        }
+
+        private bool CanSelectedObjectsList(object obj)
+        {
+            return IsSelectedObjectsList;
+        }
+
+        private void DoShowDetailsCommand(object obj)
+        {
+            DataGrid table = obj as DataGrid;
+            if (table != null)
+            {
+                DataGridRow row = table.ItemContainerGenerator.ContainerFromIndex(table.SelectedIndex) as DataGridRow;
+                if (row != null)
+                {
+                    row.DetailsVisibility = (row.DetailsVisibility == Visibility.Collapsed) ? Visibility.Visible : Visibility.Collapsed;
+                }
+            }
+        }
+
+        private void DoUpdateObjectsCommand(object obj)
+        {
+            //НЕ ОДРАЗУ АКТИВУЄ КНОПКУ (ПІСЛЯ ЗМІНИ ФОКУСА)
+            IsUpdateObjectsCommand = false;
+            IsStartWork = Visibility.Visible;
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    Objects = new ObjectsViewModel();
+                }
+                catch (Exception ex)
+                {
+                    IsStartWork = Visibility.Collapsed;
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }));
+                }
+                finally
+                {
+                    IsStartWork = Visibility.Collapsed;
+                    IsUpdateObjectsCommand = true;
+                    //CommandManager.InvalidateRequerySuggested();
+                }
+            });
+        }
+
+        private bool CanUpdateObjectsCommand(object obj)
+        {
+            return IsUpdateObjectsCommand;
         }
     }
 }
