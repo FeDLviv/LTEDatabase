@@ -5,10 +5,10 @@ BINDING (Source, ElementName, Path, BindingMode, UpdateSourceTrigger, TargetNull
 	    (CompositeCollection, MultiBinding, PriorityBinding)
 	    (привязка)
 
-DEPENDENCYPROPERTY (INotifyPropertyChnaged, DependencyObject) 
+DEPENDENCYPROPERTY (INotifyPropertyChanged, DependencyObject) 
 				   (свойства зависимости)
 
-ATTACHEDPROPERTY
+ATTACHEDPROPERTY (присоединенные свойства)
 
 ROUTEDEVENT (маршрутизируемые события)
 
@@ -24,7 +24,8 @@ RESOURCES
 CONTROL(ContentControl, ItemsControl) 
 	   (однодетные элементы управления, многодетные элементы управления, диапазонные элементы управления, все остальное)
 	   
-TEMPLATE
+TEMPLATE (ControlTemplate, DataTemplate)
+		 (ContentTemplate, ItemTemplate) 
 
 RESOURCEDICTIONARY
 

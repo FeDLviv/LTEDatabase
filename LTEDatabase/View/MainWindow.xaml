@@ -32,7 +32,7 @@
         <DataTemplate x:Key="objectTemplate">
             <StackPanel Orientation="Horizontal">
                 <Image Width="24" Height="24" Stretch="Fill" Source="/LTEDatabase;component/images/object.png" />
-                <TextBlock Text="{Binding address}" Margin="0, 0, 15, 0" />
+                <TextBlock Text="{Binding address}" Margin="5, 0, 15, 0" VerticalAlignment="Center" />
             </StackPanel>
         </DataTemplate>
         <HierarchicalDataTemplate x:Key="typeTemplate" ItemTemplate="{StaticResource objectTemplate}" ItemsSource="{Binding Objects}">
