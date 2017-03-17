@@ -36,7 +36,7 @@ namespace LTEDatabase.ViewModel
         private void CreateRegions()
         {
             //Header
-            //Other struct + sort in View
+            //Other struct
             List<objects> temp = Database.GetContext().objects.AsNoTracking().ToList();
             var regions = from x in temp
                           orderby x.region
