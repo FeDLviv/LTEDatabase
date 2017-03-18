@@ -32,4 +32,7 @@ RESOURCEDICTIONARY
 ANIMATION (From, To, By, Duration, BeginTime, AutoReverse, RepeatBehavior, FillBehavior, AccelerationRatio, DecelerationRatio, SpeedRatio)
 	      (Storyboard.TargetName, Storyboard.TargetProperty)
 
-MVVM
+MVVM (System.Windows.Interactivity.dll, Microsoft.Expressions.Interactions.dll)
+	 (Interaction.Triggers, EventTrigger, Interaction.Behaviors)
+	 (InvokeCommandAction, CallMethodAction, ChangePropertyAction, ControlStoryboardAction)
+     (Blend)
