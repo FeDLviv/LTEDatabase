@@ -7,12 +7,12 @@ using System.Windows.Input;
 
 namespace LTEDatabase.Command
 {
-    class MyCommand : ICommand
+    class BaseCommand : ICommand
     {
         private Action<object> execute;
         private Predicate<object> canExecute;
 
-        public MyCommand(Action<object> execute, Predicate<object> canExecute = null)
+        public BaseCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
             this.execute = execute;
             this.canExecute = canExecute;

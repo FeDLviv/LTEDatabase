@@ -112,6 +112,7 @@ namespace LTEDatabase.ViewModel
         public ICommand SelectedObjectsLeaf { set; get; }
         public ICommand ShowDetailsCommand { set; get; }
         public ICommand UpdateObjectsCommand { set; get; }
+        public ICommand ExitCommand { set; get; }
                
         public MainViewModel()
         {
@@ -123,31 +124,15 @@ namespace LTEDatabase.ViewModel
             
             //time.Restart();
           
-            SelectedObjectsLeaf = new MyCommand(DoSelectedObjectsList, CanSelectedObjectsList);
-            ShowDetailsCommand = new MyCommand(DoShowDetailsCommand);
-            UpdateObjectsCommand = new MyCommand(DoUpdateObjectsCommand, CanUpdateObjectsCommand);
-        }
-
-        public void DoMainWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //БАЖАНО ПЕРЕНЕСТИ В КОМАНДУ
-            Window temp = sender as Window;
-            if (temp != null)
-            {
-                MessageBoxResult result = MessageBox.Show("Вийти з програми?", temp.Title, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    Database.Close();
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
-            }
+            SelectedObjectsLeaf = new BaseCommand(DoSelectedObjectsList, CanSelectedObjectsList);
+            ShowDetailsCommand = new BaseCommand(DoShowDetailsCommand);
+            UpdateObjectsCommand = new BaseCommand(DoUpdateObjectsCommand, CanUpdateObjectsCommand);
+            ExitCommand = new ExitCommand();
         }
 
         private void DoSelectedObjectsList(object obj)
         {
+            //ПРОБЛЕМА ВІДОБРАЖЕННЯ ІНФОРМАЦІЇ ПРО ОБ'ЄКТ, КОЛИ ВИБРАНО РАЙОН ЧИ ТИП ОБ'ЄКТА
             //ПРОБЛЕМА ЗМІНИ АДРЕСИ ПРИ ПЕРШОМУ EXCEPTION
             SelectedObject = obj as objects;
             if (SelectedObject != null)
@@ -240,5 +225,23 @@ namespace LTEDatabase.ViewModel
         {
             return IsUpdateObjectsCommand;
         }
+
+        //public void DoMainWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{
+        //    //БАЖАНО ПЕРЕНЕСТИ В КОМАНДУ
+        //    Window temp = sender as Window;
+        //    if (temp != null)
+        //    {
+        //        MessageBoxResult result = MessageBox.Show("Вийти з програми?", temp.Title, MessageBoxButton.YesNo, MessageBoxImage.Question);
+        //        if (result == MessageBoxResult.Yes)
+        //        {
+        //            Database.Close();
+        //        }
+        //        else
+        //        {
+        //            e.Cancel = true;
+        //        }
+        //    }
+        //}
     }
 }

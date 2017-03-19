@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        xmlns:cmd="clr-namespace:LTEDatabase.Command"
         xmlns:vm="clr-namespace:LTEDatabase.ViewModel"
         xmlns:converter="clr-namespace:LTEDatabase.View.Converter"
         xmlns:control="clr-namespace:LTEDatabase.View.Control"
@@ -11,6 +12,12 @@
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <cmd:CommandEventArgs Command="{Binding ExitCommand}" />
+            <!--<ei:CallMethodAction MethodName="DoMainWindowClosing" TargetObject="{Binding}" />-->
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.Resources>
         <Style TargetType="{x:Type GridSplitter}">
             <Setter Property="BorderBrush" Value="Black" />
@@ -46,11 +53,6 @@
         <converter:ForegroundNullConverter x:Key="ForegroundNullConverter" />
         <converter:VisibilityConverter x:Key="VisibilityConverter" />
     </Window.Resources>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closing">
-            <ei:CallMethodAction MethodName="DoMainWindowClosing" TargetObject="{Binding}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
