@@ -201,7 +201,6 @@ namespace LTEDatabase.ViewModel
             {
                 try
                 {
-                    System.Threading.Thread.Sleep(1000);
                     Objects = new ObjectsViewModel();
                 }
                 catch (Exception ex)
