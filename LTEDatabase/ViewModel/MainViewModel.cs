@@ -195,13 +195,13 @@ namespace LTEDatabase.ViewModel
 
         private void DoUpdateObjectsCommand(object obj)
         {
-            //НЕ ОДРАЗУ АКТИВУЄ КНОПКУ (ПІСЛЯ ЗМІНИ ФОКУСА)
             IsUpdateObjectsCommand = false;
             IsStartWork = Visibility.Visible;
             Task.Factory.StartNew(() =>
             {
                 try
                 {
+                    System.Threading.Thread.Sleep(1000);
                     Objects = new ObjectsViewModel();
                 }
                 catch (Exception ex)
@@ -216,7 +216,10 @@ namespace LTEDatabase.ViewModel
                 {
                     IsStartWork = Visibility.Collapsed;
                     IsUpdateObjectsCommand = true;
-                    //CommandManager.InvalidateRequerySuggested();
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        CommandManager.InvalidateRequerySuggested();
+                    }));
                 }
             });
         }
