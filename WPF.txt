@@ -15,7 +15,7 @@ ROUTEDEVENT (маршрутизируемые события)
 TRIGGER (Trigger, MultiTrigger, DataTrigger, MultiDataTrigger, EventTrigger)
 		(триггер свойств, триггер данных, триггер события) 
 
-COMMAND (ICommand)
+COMMAND (ICommand, RoutedCommand)
 
 STYLE (x:Key, TargetType, BasedOn)
 
@@ -33,6 +33,6 @@ ANIMATION (From, To, By, Duration, BeginTime, AutoReverse, RepeatBehavior, FillB
 	      (Storyboard.TargetName, Storyboard.TargetProperty)
 
 MVVM (System.Windows.Interactivity.dll, Microsoft.Expressions.Interactions.dll)
-	 (Interaction.Triggers, EventTrigger, Interaction.Behaviors)
-	 (InvokeCommandAction, CallMethodAction, ChangePropertyAction, ControlStoryboardAction)
+	 (TriggerAction<T>, InvokeCommandAction, CallMethodAction, Interaction.Behaviors)
+	 (Interaction.Triggers, EventTrigger, ChangePropertyAction, ControlStoryboardAction)
      (Blend)
