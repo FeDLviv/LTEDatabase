@@ -1,4 +1,4 @@
-﻿XAML (разметка)
+XAML (разметка)
 
 BINDING (Source, ElementName, Path, BindingMode, UpdateSourceTrigger, TargetNullValue, RelativeSource, ValidationRules, ValidatesOnExceptions, ValidatesOnDataErrors, NotifyOnTargetUpdated, NotifyOnSourceUpdated, StringFormat) 
 	    (IValueConverter) 
@@ -36,3 +36,6 @@ MVVM (System.Windows.Interactivity.dll, Microsoft.Expressions.Interactions.dll)
 	 (TriggerAction<T>, InvokeCommandAction, CallMethodAction, Interaction.Behaviors)
 	 (Interaction.Triggers, EventTrigger, ChangePropertyAction, ControlStoryboardAction)
      (Blend)
+     
+ WEB (sshumakov.com, wpf.2000things.com, losev-al.blogspot.com)
+     (metanit.com, professorweb.ru)
