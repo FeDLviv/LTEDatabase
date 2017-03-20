@@ -2,24 +2,22 @@
 using LTEDatabase.Command;
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Controls;
-using System.ComponentModel;
 
 namespace LTEDatabase.ViewModel 
 {
     class MainViewModel : BaseViewModel
     {
         private object locker = new object();
+        private bool isSelectedObjectsLeaf = true;
 
         private ObjectsViewModel objects;
         public ObjectsViewModel Objects
@@ -80,21 +78,7 @@ namespace LTEDatabase.ViewModel
                 }
             }
         }
-
-        private bool isSelectedObjectsLeaf = true;
-        public bool IsSelectedObjectsList 
-        {
-            get { return isSelectedObjectsLeaf; }
-            set
-            {
-                if (isSelectedObjectsLeaf != value)
-                {
-                    isSelectedObjectsLeaf = value;
-                    OnPropertyChanged("IsSelectedObjectsList");
-                }
-            }
-        }
-
+                    
         private bool isUpdateObjectsCommand = true;
         public bool IsUpdateObjectsCommand 
         {
@@ -121,23 +105,21 @@ namespace LTEDatabase.ViewModel
             Objects = new ObjectsViewModel();
             time.Stop();
             Console.WriteLine("Create ObjectsViewModel={0}", time.ElapsedMilliseconds);
-            
+
             //time.Restart();
-          
-            SelectedObjectsLeaf = new BaseCommand(DoSelectedObjectsList, CanSelectedObjectsList);
+
+            SelectedObjectsLeaf = new BaseCommand(DoSelectedObjectsList);
             ShowDetailsCommand = new BaseCommand(DoShowDetailsCommand);
             UpdateObjectsCommand = new BaseCommand(DoUpdateObjectsCommand, CanUpdateObjectsCommand);
-            ExitCommand = new ExitCommand();
+            ExitCommand = new BaseRoutedCommand(DoMainWindowClosing);
         }
 
         private void DoSelectedObjectsList(object obj)
         {
-            //ПРОБЛЕМА ВІДОБРАЖЕННЯ ІНФОРМАЦІЇ ПРО ОБ'ЄКТ, КОЛИ ВИБРАНО РАЙОН ЧИ ТИП ОБ'ЄКТА
-            //ПРОБЛЕМА ЗМІНИ АДРЕСИ ПРИ ПЕРШОМУ EXCEPTION
             SelectedObject = obj as objects;
-            if (SelectedObject != null)
+            if (SelectedObject != null && isSelectedObjectsLeaf)
             {
-                IsSelectedObjectsList = false;
+                isSelectedObjectsLeaf = false;
                 IsStartWork = Visibility.Visible;
                 Motors = null;
                 Task.Factory.StartNew(UpdateMotors, SelectedObject);
@@ -155,7 +137,7 @@ namespace LTEDatabase.ViewModel
                     {
                         Motors = new ObservableCollection<motors_lte>(
                                  (from x in Database.GetContext().motors_lte
-                                 where x.idObject == selectedObject.idObject
+                                 where x.idObject == temp.idObject
                                  select x).Include("missions").AsNoTracking().ToList());
                     }
                 }
@@ -170,14 +152,9 @@ namespace LTEDatabase.ViewModel
                 finally
                 {
                     IsStartWork = Visibility.Collapsed;
-                    IsSelectedObjectsList = true;
+                    isSelectedObjectsLeaf = true;
                 }
             }
-        }
-
-        private bool CanSelectedObjectsList(object obj)
-        {
-            return IsSelectedObjectsList;
         }
 
         private void DoShowDetailsCommand(object obj)
@@ -226,6 +203,24 @@ namespace LTEDatabase.ViewModel
         private bool CanUpdateObjectsCommand(object obj)
         {
             return IsUpdateObjectsCommand;
+        }
+
+        private static void DoMainWindowClosing(object sender, object args)
+        {
+            Window temp = sender as Window;
+            CancelEventArgs ev = args as CancelEventArgs;
+            if (temp != null && ev != null)
+            {
+                MessageBoxResult result = MessageBox.Show("Вийти з програми?", temp.Title, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    Database.Close();
+                }
+                else
+                {
+                    ev.Cancel = true;
+                }
+            }
         }
 
         //public void DoMainWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)

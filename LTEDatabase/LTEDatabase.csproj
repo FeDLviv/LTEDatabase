@@ -135,7 +135,6 @@
     <Compile Include="Model\wiloWheels.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\Database.cs" />
-    <Compile Include="ViewModel\ExitCommand.cs" />
     <Compile Include="ViewModel\ObjectsViewModel.cs" />
     <Compile Include="View\Control\MotorRowDetails.xaml.cs">
       <DependentUpon>MotorRowDetails.xaml</DependentUpon>
