@@ -5,37 +5,41 @@
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="control" Visibility="Collapsed" Opacity="0">
+    <UserControl.Resources>
+        <Storyboard x:Key="Start" TargetName="control">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="00:00:01" />
+            <StringAnimationUsingKeyFrames Storyboard.TargetName="text" Storyboard.TargetProperty="Text" 
+                                           RepeatBehavior="Forever" AutoReverse="False" BeginTime="00:00:00.5">
+                <DiscreteStringKeyFrame KeyTime="00:00:00.5" Value="За" />
+                <DiscreteStringKeyFrame KeyTime="00:00:01" Value="Заче" />
+                <DiscreteStringKeyFrame KeyTime="00:00:01.5" Value="Зачекай" />
+                <DiscreteStringKeyFrame KeyTime="00:00:02" Value="Зачекайте" />
+            </StringAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="Stop" TargetName="control">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="00:00:01" />
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="{x:Static Visibility.Collapsed}" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <i:Interaction.Triggers>
+        <ei:DataTrigger Binding="{Binding IsStartWork}" Value="True">
+            <ei:ControlStoryboardAction Storyboard="{StaticResource Start}" ControlStoryboardOption="Play" />
+        </ei:DataTrigger>
+        <ei:DataTrigger Binding="{Binding IsStartWork}" Value="False">
+            <ei:ControlStoryboardAction Storyboard="{StaticResource Start}" ControlStoryboardOption="Stop" />
+            <ei:ControlStoryboardAction Storyboard="{StaticResource Stop}" />
+        </ei:DataTrigger>
+    </i:Interaction.Triggers>
     <Grid>
-        <ProgressBar x:Name="progress" Width="150" Height="20" BorderThickness="1" BorderBrush="Black" IsIndeterminate="True" 
-                     Opacity="0" Visibility="Collapsed">
-            <i:Interaction.Triggers>
-                <ei:DataTrigger Binding="{Binding IsStartWork}" Value="True">
-                    <ei:ControlStoryboardAction>
-                        <ei:ControlStoryboardAction.Storyboard>
-                            <Storyboard TargetName="progress">
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
-                                    <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
-                                </ObjectAnimationUsingKeyFrames>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="00:00:01" />
-                            </Storyboard>
-                        </ei:ControlStoryboardAction.Storyboard>
-                    </ei:ControlStoryboardAction>
-                </ei:DataTrigger>
-                <ei:DataTrigger Binding="{Binding IsStartWork}" Value="False">
-                    <ei:ControlStoryboardAction>
-                        <ei:ControlStoryboardAction.Storyboard>
-                            <Storyboard TargetName="progress">
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="00:00:00.5" />
-                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
-                                    <DiscreteObjectKeyFrame KeyTime="00:00:00.5" Value="{x:Static Visibility.Collapsed}" />
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </ei:ControlStoryboardAction.Storyboard>
-                    </ei:ControlStoryboardAction>
-                </ei:DataTrigger>
-            </i:Interaction.Triggers>
-        </ProgressBar>     
+        <ProgressBar x:Name="progress" Width="150" Height="20" BorderThickness="1" BorderBrush="Black" IsIndeterminate="True" />
+        <TextBlock x:Name="text" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontStyle="Italic" 
+                   Foreground="Gray" Text="Зачекайте" />
     </Grid>
 </UserControl>
