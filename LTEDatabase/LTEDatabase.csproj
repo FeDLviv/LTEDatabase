@@ -139,9 +139,16 @@
     <Compile Include="View\Control\MotorRowDetails.xaml.cs">
       <DependentUpon>MotorRowDetails.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Control\MyProgressBar.xaml.cs">
+      <DependentUpon>MyProgressBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Converter\DateConverter.cs" />
     <Compile Include="View\Converter\ForegroundNullConverter.cs" />
     <Page Include="View\Control\MotorRowDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Control\MyProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
