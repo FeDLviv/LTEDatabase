@@ -34,8 +34,8 @@ ANIMATION (From, To, By, Duration, BeginTime, AutoReverse, RepeatBehavior, FillB
 
 MVVM (System.Windows.Interactivity.dll, Microsoft.Expressions.Interactions.dll)
 	 (TriggerAction<T>, InvokeCommandAction, CallMethodAction, Interaction.Behaviors)
-	 (Interaction.Triggers, EventTrigger, ChangePropertyAction, ControlStoryboardAction)
+	 (Interaction.Triggers, EventTrigger, DataTrigger, ControlStoryboardAction, ChangePropertyAction)
      (Blend)
      
- WEB (sshumakov.com, wpf.2000things.com, losev-al.blogspot.com)
-     (metanit.com, professorweb.ru)
+WEB (losev-al.blogspot.com, wpf.2000things.com, sshumakov.com)
+    (professorweb.ru, metanit.com)

@@ -165,31 +165,34 @@
             </DataGrid>
         </Grid>
         <GridSplitter Grid.Row="1" Grid.Column="2" Height="5" HorizontalAlignment="Stretch" />
-        <ProgressBar Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" Width="150" Height="20" Opacity="0" 
-                     BorderThickness="1" IsIndeterminate="True" Visibility="{Binding Path=IsStartWork}">
-            <ProgressBar.Resources>
-                <Style TargetType="{x:Type ProgressBar}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Visibility}" Value="Visible">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard TargetProperty="Opacity">
-                                        <DoubleAnimation To="1" Duration="00:00:01" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard>                               
-                                    <Storyboard TargetProperty="Opacity">
-                                        <!--не видно бо зникає-->
-                                        <DoubleAnimation To="0" Duration="00:00:00:1" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ProgressBar.Resources>
+        <ProgressBar x:Name="progress" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" Width="150" Height="20" 
+                     BorderThickness="1" IsIndeterminate="True" Opacity="0" Visibility="Collapsed">
+            <i:Interaction.Triggers>
+                <ei:DataTrigger Binding="{Binding IsStartWork}" Value="True">
+                    <ei:ControlStoryboardAction>
+                        <ei:ControlStoryboardAction.Storyboard>
+                            <Storyboard TargetName="progress">
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                    <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
+                                </ObjectAnimationUsingKeyFrames>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="00:00:01" />
+                            </Storyboard>
+                        </ei:ControlStoryboardAction.Storyboard>
+                    </ei:ControlStoryboardAction>
+                </ei:DataTrigger>
+                <ei:DataTrigger Binding="{Binding IsStartWork}" Value="False">
+                    <ei:ControlStoryboardAction>
+                        <ei:ControlStoryboardAction.Storyboard>
+                            <Storyboard TargetName="progress">
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="00:00:00.5" />
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                    <DiscreteObjectKeyFrame KeyTime="00:00:00.5" Value="{x:Static Visibility.Collapsed}" />
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </ei:ControlStoryboardAction.Storyboard>
+                    </ei:ControlStoryboardAction>
+                </ei:DataTrigger>
+            </i:Interaction.Triggers>
         </ProgressBar>
     </Grid>
 </Window>

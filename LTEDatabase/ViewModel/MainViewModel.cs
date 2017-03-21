@@ -65,8 +65,8 @@ namespace LTEDatabase.ViewModel
             }
         }
 
-        private Visibility isStartWork = Visibility.Collapsed;
-        public Visibility IsStartWork 
+        private bool isStartWork = false;
+        public bool IsStartWork 
         {
             get { return isStartWork; }
             set
@@ -120,7 +120,7 @@ namespace LTEDatabase.ViewModel
             if (SelectedObject != null && isSelectedObjectsLeaf)
             {
                 isSelectedObjectsLeaf = false;
-                IsStartWork = Visibility.Visible;
+                IsStartWork = true;
                 Motors = null;
                 Task.Factory.StartNew(UpdateMotors, SelectedObject);
             }
@@ -143,7 +143,7 @@ namespace LTEDatabase.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    IsStartWork = Visibility.Collapsed;
+                    IsStartWork = false;
                     Application.Current.Dispatcher.Invoke(new Action(() =>
                     {
                         MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -151,7 +151,7 @@ namespace LTEDatabase.ViewModel
                 }
                 finally
                 {
-                    IsStartWork = Visibility.Collapsed;
+                    IsStartWork = false;
                     isSelectedObjectsLeaf = true;
                 }
             }
@@ -173,7 +173,7 @@ namespace LTEDatabase.ViewModel
         private void DoUpdateObjectsCommand(object obj)
         {
             IsUpdateObjectsCommand = false;
-            IsStartWork = Visibility.Visible;
+            IsStartWork = true;
             Task.Factory.StartNew(() =>
             {
                 try
@@ -182,7 +182,7 @@ namespace LTEDatabase.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    IsStartWork = Visibility.Collapsed;
+                    IsStartWork = false;
                     Application.Current.Dispatcher.Invoke(new Action(() =>
                     {
                         MessageBox.Show(ex.Message, "Помилка", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -190,7 +190,7 @@ namespace LTEDatabase.ViewModel
                 }
                 finally
                 {
-                    IsStartWork = Visibility.Collapsed;
+                    IsStartWork = false;
                     IsUpdateObjectsCommand = true;
                     Application.Current.Dispatcher.Invoke(new Action(() =>
                     {
