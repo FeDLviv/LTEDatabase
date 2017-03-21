@@ -29,7 +29,9 @@
                     <EventTrigger.Actions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="00:00:01.5" />
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="0" To="1" Duration="00:00:00.5" />
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="0" To="1" Duration="00:00:00.5" />
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="00:00:01" />
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger.Actions>
@@ -103,8 +105,13 @@
             </TextBlock>
             <DataGrid x:Name="DataGridObject" Grid.Row="1" Grid.Column="0" AlternatingRowBackground = "LightGray" 
                       AlternationCount = "2" FrozenColumnCount="4" AutoGenerateColumns="False" IsReadOnly="True" 
-                      RowDetailsVisibilityMode="Collapsed" ItemsSource="{Binding Path=Motors, NotifyOnTargetUpdated=True}"  
+                      ScrollViewer.CanContentScroll="False" RowDetailsVisibilityMode="Collapsed" 
+                      RenderTransformOrigin="0.5,1.0" 
+                      ItemsSource="{Binding Path=Motors, NotifyOnTargetUpdated=True}"  
                       Visibility="{Binding Path=Motors, Converter={StaticResource VisibilityConverter}}">
+                <DataGrid.RenderTransform>
+                    <ScaleTransform />
+                </DataGrid.RenderTransform>
                 <DataGrid.InputBindings>
                     <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding Path=ShowDetailsCommand}" 
                                   CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" />
