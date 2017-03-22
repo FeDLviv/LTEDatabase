@@ -29,10 +29,10 @@ TEMPLATE (ControlTemplate, DataTemplate)
 
 RESOURCEDICTIONARY
 
-ANIMATION (Storyboard.TargetName, Storyboard.TargetProperty)
-		  (DoubleAnimation, StringAnimationUsingKeyFrames, ObjectAnimationUsingKeyFrames)
+ANIMATION (Storyboard, Storyboard.TargetName, Storyboard.TargetProperty)
+		  (XXXAnimation, XXXAnimationUsingKeyFrames, XXXAnimationUsingPath)
 `		  (From, To, By, Duration, BeginTime, AutoReverse, RepeatBehavior, FillBehavior, AccelerationRatio, DecelerationRatio, SpeedRatio)
-  (RenderTransform, RenderTransformOrigin, TransformGroup, RotateTransform, ScaleTransform, SkewTransform, TranslateTransform, MatrixTransform)
+          (RenderTransform, RenderTransformOrigin, TransformGroup, RotateTransform, ScaleTransform, SkewTransform, TranslateTransform, MatrixTransform)
 
 MVVM (System.Windows.Interactivity.dll, Microsoft.Expressions.Interactions.dll)
 	 (TriggerAction<T>, InvokeCommandAction, CallMethodAction, Interaction.Behaviors)

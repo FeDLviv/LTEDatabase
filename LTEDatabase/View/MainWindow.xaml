@@ -29,9 +29,13 @@
                     <EventTrigger.Actions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="0" To="1" Duration="00:00:00.5" />
-                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="0" To="1" Duration="00:00:00.5" />
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                                                 To="0.5" Duration="00:00:00" />                               
                                 <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="00:00:01" />
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[1].X"
+                                                 From="{x:Static SystemParameters.PrimaryScreenWidth}" To="0" Duration="00:00:0.5" />
+                                <DoubleAnimation BeginTime="00:00:00.6" Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
+                                                 To="1.0" Duration="00:00:00.4" />
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger.Actions>
@@ -75,7 +79,7 @@
                             <Storyboard TargetName="TextObject" TargetProperty="FontSize">
                                 <DoubleAnimation From="0" Duration="00:00:00.4" />
                                 <DoubleAnimation To="18" BeginTime="00:00:00.4" Duration="00:00:00.2" DecelerationRatio="0.5" 
-                                                 AutoReverse="True" />
+                                                 AutoReverse="True" />                    
                             </Storyboard>
                         </BeginStoryboard>
                     </EventTrigger.Actions>
@@ -106,11 +110,14 @@
             <DataGrid x:Name="DataGridObject" Grid.Row="1" Grid.Column="0" AlternatingRowBackground = "LightGray" 
                       AlternationCount = "2" FrozenColumnCount="4" AutoGenerateColumns="False" IsReadOnly="True" 
                       ScrollViewer.CanContentScroll="False" RowDetailsVisibilityMode="Collapsed" 
-                      RenderTransformOrigin="0.5,1.0" 
+                      RenderTransformOrigin="0.5,0.5" 
                       ItemsSource="{Binding Path=Motors, NotifyOnTargetUpdated=True}"  
                       Visibility="{Binding Path=Motors, Converter={StaticResource VisibilityConverter}}">
                 <DataGrid.RenderTransform>
-                    <ScaleTransform />
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <TranslateTransform />
+                    </TransformGroup>
                 </DataGrid.RenderTransform>
                 <DataGrid.InputBindings>
                     <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding Path=ShowDetailsCommand}" 
@@ -169,7 +176,7 @@
                         <control:MotorRowDetails />
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
-            </DataGrid>
+            </DataGrid>           
         </Grid>
         <GridSplitter Grid.Row="1" Grid.Column="2" Height="5" HorizontalAlignment="Stretch" />
         <control:MyProgressBar Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" />
