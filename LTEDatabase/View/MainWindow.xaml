@@ -179,6 +179,6 @@
             </DataGrid>           
         </Grid>
         <GridSplitter Grid.Row="1" Grid.Column="2" Height="5" HorizontalAlignment="Stretch" />
-        <control:MyProgressBar Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" />
+        <control:MyProgressBar Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" Width="80" Height="80" />
     </Grid>
 </Window>
