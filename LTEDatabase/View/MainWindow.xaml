@@ -109,7 +109,7 @@
             </TextBlock>
             <DataGrid x:Name="DataGridObject" Grid.Row="1" Grid.Column="0" AlternatingRowBackground = "LightGray" 
                       AlternationCount = "2" FrozenColumnCount="4" AutoGenerateColumns="False" IsReadOnly="True" 
-                      ScrollViewer.CanContentScroll="False" RowDetailsVisibilityMode="Collapsed" 
+                      ScrollViewer.CanContentScroll="False" AreRowDetailsFrozen="True" RowDetailsVisibilityMode="Collapsed" 
                       RenderTransformOrigin="0.5,0.5" 
                       ItemsSource="{Binding Path=Motors, NotifyOnTargetUpdated=True}"  
                       Visibility="{Binding Path=Motors, Converter={StaticResource VisibilityConverter}}">
