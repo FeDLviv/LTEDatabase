@@ -1,4 +1,5 @@
 ﻿using LTEDatabase.Model;
+using LTEDatabase.View;
 using LTEDatabase.Command;
 
 using System;
@@ -96,8 +97,9 @@ namespace LTEDatabase.ViewModel
         public ICommand SelectedObjectsLeaf { set; get; }
         public ICommand ShowDetailsCommand { set; get; }
         public ICommand UpdateObjectsCommand { set; get; }
+        public ICommand ChartCommand { set; get; }
         public ICommand ExitCommand { set; get; }
-               
+                       
         public MainViewModel()
         {
             System.Diagnostics.Stopwatch time = new System.Diagnostics.Stopwatch();
@@ -111,6 +113,7 @@ namespace LTEDatabase.ViewModel
             SelectedObjectsLeaf = new BaseCommand(DoSelectedObjectsList);
             ShowDetailsCommand = new BaseCommand(DoShowDetailsCommand);
             UpdateObjectsCommand = new BaseCommand(DoUpdateObjectsCommand, CanUpdateObjectsCommand);
+            ChartCommand = new BaseCommand(DoChartCommand);
             ExitCommand = new BaseRoutedCommand(DoMainWindowClosing);
         }
 
@@ -204,6 +207,14 @@ namespace LTEDatabase.ViewModel
         {
             return IsUpdateObjectsCommand;
         }
+
+        private void DoChartCommand(object obj)
+        {
+            ChartWindow window = new ChartWindow();
+            window.DataContext = new ChartViewModel();
+            window.ShowDialog();
+        }
+		
 
         private static void DoMainWindowClosing(object sender, object args)
         {

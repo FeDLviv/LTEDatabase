@@ -1,0 +1,48 @@
+﻿<Window x:Class="LTEDatabase.View.ChartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:metro="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:control="clr-namespace:LTEDatabase.View.Control"
+        xmlns:vm="clr-namespace:LTEDatabase.ViewModel"
+        xmlns:beh="clr-namespace:LTEDatabase.View.Behavior"
+        Title="Діаграми" WindowState="Maximized" WindowStyle="ToolWindow" ShowInTaskbar="False">
+    <Window.DataContext>
+        <vm:ChartViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="metro:Tile">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="BorderBrush" Value="White" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="Black" />
+                    <Setter Property="BorderThickness" Value="2" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <i:Interaction.Behaviors>
+        <beh:WindowAeroGlassBehavior />
+    </i:Interaction.Behaviors>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <metro:Tile Grid.Row="0" Grid.Column="0" Title="Двигуни" 
+                    ToolTip="Кругова діаграма двигунів на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;" Command="{Binding PieChartMotorCommand}">
+            <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
+        </metro:Tile>
+        <metro:Tile Grid.Row="0" Grid.Column="1" Title="Лічильники" 
+                    ToolTip="Гістограма лічильників на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;">
+            <Image Source="/LTEDatabase;component/images/histogram.png" Margin="20" />
+        </metro:Tile>
+        <control:Chart Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" RenderTransformOrigin="0.0,0.0" />
+    </Grid>
+</Window>
