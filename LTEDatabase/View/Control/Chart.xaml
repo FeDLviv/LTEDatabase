@@ -47,17 +47,26 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" FontSize="26" FontStyle="Italic" 
                    Text="{Binding Path=TitleChart}" />
-            <lvc:PieChart Grid.Row="1" Grid.Column="0" Margin="10" Background="Transparent" LegendLocation="Bottom" 
+            <lvc:PieChart Grid.Row="1" Grid.Column="0" Margin="10" HoverPushOut="20" LegendLocation="Bottom"
                           Series="{Binding Data}">
-                <lvc:PieChart.ChartLegend>
-                    <lvc:DefaultLegend BulletSize="20" Background="Gray" Margin="5" />
-                </lvc:PieChart.ChartLegend>
-                <lvc:PieChart.DataTooltip>
+            <lvc:PieChart.Resources>
+                <Style TargetType="lvc:PieSeries">
+                    <Setter Property="DataLabels" Value="{Binding ShowLabel}" />
+                    <Setter Property="LabelPoint" Value="{Binding Label}" />
+                    <Setter Property="LabelPosition" Value="OutsideSlice" />
+                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="Foreground" Value="Black" />
+                </Style>
+            </lvc:PieChart.Resources>
+            <lvc:PieChart.ChartLegend>
+                <lvc:DefaultLegend BulletSize="20" Background="Gray" Margin="5" />
+            </lvc:PieChart.ChartLegend>
+            <lvc:PieChart.DataTooltip>
                 <lvc:DefaultTooltip BulletSize="20" Background="Gray" Opacity="0.8" CornerRadius="5" SelectionMode="OnlySender" />
-                </lvc:PieChart.DataTooltip>
+            </lvc:PieChart.DataTooltip>
             </lvc:PieChart>
-        <Button Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Left"
-                Width="50" Height="50" Margin="5" Style="{StaticResource MetroCircleButtonStyle}" 
+        <Button Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" VerticalAlignment="Top" 
+                HorizontalAlignment="Left" Width="50" Height="50" Margin="5" Style="{StaticResource MetroCircleButtonStyle}" 
                 Command="{Binding ChartHiddenCommand}">
             <Rectangle Width="24" Height="24">
                 <Rectangle.Fill>
@@ -66,8 +75,9 @@
             </Rectangle>
         </Button>
         <Slider Grid.Row="2" Grid.Column="0" Margin="5" TickFrequency="1" IsSnapToTickEnabled="True" 
-                TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight"  Value="{Binding FilterValue}"
-                Visibility="{Binding Path=MaxFilter, Converter={StaticResource VisibilityConverter}}" Minimum="1" Maximum="{Binding MaxFilter}" >
+                TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" Value="{Binding FilterValue}"
+                Visibility="{Binding Path=MaxFilter, Converter={StaticResource VisibilityConverter}}" 
+                Minimum="1" Maximum="{Binding MaxFilter}" >
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="PreviewMouseUp">
                     <i:InvokeCommandAction Command="{Binding FilterCommand}" />

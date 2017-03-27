@@ -1,5 +1,5 @@
-﻿using LTEDatabase.Command;
-using LTEDatabase.ViewModel;
+﻿using LTEDatabase.ViewModel;
+using LTEDatabase.Command;
 
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,8 @@ namespace LTEDatabase.ViewModel
 {
     class ChartViewModel : BaseViewModel
     {
-        private const int COUNT = 11;
+        private const int LIMIT = 8;
+        private IQueryable<ChartData> query;
         private List<ChartData> list = new List<ChartData>();
         
         private bool showChart = false;
@@ -27,20 +28,6 @@ namespace LTEDatabase.ViewModel
                 {
                     showChart = value;
                     OnPropertyChanged("ShowChart");
-                }
-            }
-        }
-
-        private bool isMore = true;
-        public bool IsMore 
-        {
-            get { return isMore; }
-            set
-            {
-                if (isMore != value)
-                {
-                    isMore = value;
-                    OnPropertyChanged("IsMore");
                 }
             }
         }
@@ -87,6 +74,34 @@ namespace LTEDatabase.ViewModel
             }
         }
 
+        private bool showLabel = false;
+        public bool ShowLabel 
+        {
+            get { return showLabel; }
+            set
+            {
+                if (showLabel != value)
+                {
+                    showLabel = value;
+                    OnPropertyChanged("ShowLabel");
+                }
+            }
+        }
+
+        private Func<ChartPoint, string> label = (chartPoint) => { return string.Format("({0} з {1} )", chartPoint.Y, chartPoint.Sum); };
+        public Func<ChartPoint, string> Label
+        {
+            get { return label; }
+            set
+            {
+                if (label != value)
+                {
+                    label = value;
+                    OnPropertyChanged("Label");
+                }
+            }
+        }
+
         private SeriesCollection data = new SeriesCollection();
         public SeriesCollection Data
         {
@@ -100,31 +115,25 @@ namespace LTEDatabase.ViewModel
                 }
             }
         }
-
+        
         public ICommand PieChartMotorCommand { get; set; }
         public ICommand FilterCommand { get; set; }
         public ICommand ChartHiddenCommand { get; set; }
 
         public ChartViewModel()
         {
-            //ЗАГОЛОВОК ДІАГРАМИ
+            //ФІЛЬТРАЦІЯ, ЯКЩО ЗМІНЕНО  ЗНАЧЕННЯ В SLIDER (Thumb.DragCompleted)
+            
+            //ВІКНО ПОТРІБНО "ОБРІЗАТИ" (НОРМАЛЬНІ РОЗМІРИ), АКТИВАЦІЯ, ЯКЩО БУВ ПЕРЕХІД В ІНШУ ПРОГРАММУ
+            //PROGRESSBAR
+            
             //ЗНИКНЕННЯ ToolTip при розкритті/закритті діаграми
-            //НАЗВИ ВСІХ ЧАСТИН (DataLabels, LabelPoint(проблема сумісності з ToolTip))
-
-            //public Func<ChartPoint, string> PointLabel { get; set; }
-            //PointLabel = (chartPoint) => { return chartPoint.SeriesView.Title; };
-            //DataLabels=true
-
-            //ФІЛЬТРАЦІЯ 
-
-            //ВІКНО ПОТРІБНО "ОБРІЗАТИ"
-
+            //DATALABELS ПРОБЛЕМА СУМІСНОСТІ З TOOLTIP
             //ЗАПИТИ - SQL, а не - LINQ
-            //Thumb.DragCompleted
-            //ЛЕЙБОЧКА НА РЕШТУ ЯКЩО < 10
             //EXCEPTION SQL
+            
             //ГІСТОГРАММА (Basic Column)
-
+            
             PieChartMotorCommand = new BaseCommand(DoPieChartMotorCommand);
             FilterCommand = new BaseCommand(DoFilterCommand);
             ChartHiddenCommand = new BaseCommand(DoChartHiddenCommand);
@@ -133,88 +142,56 @@ namespace LTEDatabase.ViewModel
         private void DoPieChartMotorCommand(object obj)
         {
             TitleChart = "Двигуни на об'єктах ЛМКП \"Львівтеплоенерго\"";
-
-            list.Clear();
-            list = (from x in Database.GetContext().motors_lte.AsNoTracking()
+            query = from x in Database.GetContext().motors_lte.AsNoTracking()
                     group x by x.series into g
                     let count = g.Count()
                     orderby count descending
-                    select new ChartData { Key = g.Key, Value = g.Count() }).ToList();
+                    select new ChartData { Key = g.Key, Value = g.Count() };
+            LoadData();
+        }
 
-            Data.Clear();
-
-            IsMore = (list.Count > COUNT);
-            if (!IsMore)
+        private void LoadData()
+        {
+            list.Clear();
+            list = query.ToList();
+            if (list.Count > LIMIT)
             {
-                foreach (ChartData x in list)
-                {
-                    Data.Add(new PieSeries() { Title = x.Key, Values = new ChartValues<int> { x.Value }, DataLabels = true });
-                }
+                MaxFilter = list[LIMIT - 2].Value;
+                FilterValue = MaxFilter;
             }
-            else 
+            else
             {
-                MaxFilter = list[COUNT-2].Value;
-                foreach (ChartData x in list)
-                {
-                    Data.Add(new PieSeries() { Title = x.Key, Values = new ChartValues<int> { x.Value } });
-                }
-            }           
-                        
+                MaxFilter = 0;
+                FilterValue = 1;
+            }
+            DoFilterCommand(null);
             ShowChart = true;
         }
 
         private void DoFilterCommand(object obj)
         {
             Data.Clear();
-            int index = list.FindIndex( (x) => 
+            int count = 0;
+            foreach(ChartData x in list)
             {
-                if (x.Value < FilterValue)
+                if (x.Value >= FilterValue)
                 {
-                    return true;
-                }
-                else 
-                {
-                    return false;
-                }
-            });
-            if (index > -1)
-            {
-                for (int i = 0; i < index; i++)
-                {
-                    Data.Add(new PieSeries() { Title = list[i].Key, Values = new ChartValues<int> { list[i].Value }, DataLabels = index < COUNT });
-                }
-
-                int count = 0;
-                for (; index < list.Count; index++)
-                {
-                    count += list[index].Value;
-                }
-                Data.Add(new PieSeries() { Title = "решта", Values = new ChartValues<int> { count }, DataLabels = index < COUNT, PushOut = 15 });
-            }
-            else
-            {
-                //МАЙЖЕ ДУБЛЯЖ
-                if (!IsMore)
-                {
-                    foreach (ChartData x in list)
-                    {
-                        Data.Add(new PieSeries() { Title = x.Key, Values = new ChartValues<int> { x.Value }, DataLabels = true });
-                    }
+                    Data.Add(new PieSeries() { Title = x.Key, Values = new ChartValues<int> { x.Value } });
                 }
                 else
                 {
-                    //MaxFilter = list[COUNT - 2].Value;
-                    foreach (ChartData x in list)
-                    {
-                        Data.Add(new PieSeries() { Title = x.Key, Values = new ChartValues<int> { x.Value } });
-                    }
-                }      
+                    count += x.Value;
+                }
             }
+            if (count > 0)
+            {
+                Data.Add(new PieSeries() { Title = "решта", Values = new ChartValues<int> { count }, PushOut = 15 }); 
+            }
+            ShowLabel = Data.Count <= LIMIT; 
         }
 
         private void DoChartHiddenCommand(object obj)
         {
-            FilterValue = 1;
             ShowChart = false;
         }
     }
