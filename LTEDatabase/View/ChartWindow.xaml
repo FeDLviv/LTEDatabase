@@ -6,7 +6,7 @@
         xmlns:control="clr-namespace:LTEDatabase.View.Control"
         xmlns:vm="clr-namespace:LTEDatabase.ViewModel"
         xmlns:beh="clr-namespace:LTEDatabase.View.Behavior"
-        Title="Діаграми" WindowState="Maximized" WindowStyle="ToolWindow" ShowInTaskbar="False">
+        Title="Діаграми" WindowState="Maximized" WindowStyle="SingleBorderWindow" ShowInTaskbar="False" ResizeMode="CanResize">
     <Window.DataContext>
         <vm:ChartViewModel />
     </Window.DataContext>
