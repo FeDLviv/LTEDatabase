@@ -15,7 +15,10 @@ namespace LTEDatabase.ViewModel
     class ChartViewModel : BaseViewModel
     {
         private const int LIMIT = 8;
-        private IQueryable<ChartData> query;
+        private const string QUERY_MOTOR = "SELECT series AS Name, COUNT(*) AS Value FROM motors_lte GROUP BY Name ORDER BY Value DESC;";
+        private const string TITLE_MOTOR = "Двигуни на об'єктах ЛМКП \"Львівтеплоенерго\"";
+
+        private string query;
         private List<ChartData> list = new List<ChartData>();
         
         private bool showChart = false;
@@ -124,12 +127,10 @@ namespace LTEDatabase.ViewModel
         {
             //ФІЛЬТРАЦІЯ, ЯКЩО ЗМІНЕНО  ЗНАЧЕННЯ В SLIDER (Thumb.DragCompleted)
             
-            //ВІКНО ПОТРІБНО "ОБРІЗАТИ" (НОРМАЛЬНІ РОЗМІРИ), АКТИВАЦІЯ, ЯКЩО БУВ ПЕРЕХІД В ІНШУ ПРОГРАММУ
             //PROGRESSBAR
             
             //ЗНИКНЕННЯ ToolTip при розкритті/закритті діаграми
             //DATALABELS ПРОБЛЕМА СУМІСНОСТІ З TOOLTIP
-            //ЗАПИТИ - SQL, а не - LINQ
             //EXCEPTION SQL
             
             //ГІСТОГРАММА (Basic Column)
@@ -141,19 +142,15 @@ namespace LTEDatabase.ViewModel
 
         private void DoPieChartMotorCommand(object obj)
         {
-            TitleChart = "Двигуни на об'єктах ЛМКП \"Львівтеплоенерго\"";
-            query = from x in Database.GetContext().motors_lte.AsNoTracking()
-                    group x by x.series into g
-                    let count = g.Count()
-                    orderby count descending
-                    select new ChartData { Key = g.Key, Value = g.Count() };
+            TitleChart = TITLE_MOTOR;
+            query = QUERY_MOTOR;
             LoadData();
         }
 
         private void LoadData()
         {
             list.Clear();
-            list = query.ToList();
+            list = Database.GetContext().Database.SqlQuery<ChartData>(query).ToList();
             if (list.Count > LIMIT)
             {
                 MaxFilter = list[LIMIT - 2].Value;
@@ -176,7 +173,7 @@ namespace LTEDatabase.ViewModel
             {
                 if (x.Value >= FilterValue)
                 {
-                    Data.Add(new PieSeries() { Title = x.Key, Values = new ChartValues<int> { x.Value } });
+                    Data.Add(new PieSeries() { Title = x.Name, Values = new ChartValues<int> { x.Value } });
                 }
                 else
                 {
@@ -198,7 +195,7 @@ namespace LTEDatabase.ViewModel
 
     public class ChartData
     {
-        public string Key { get; set; }
+        public string Name { get; set; }
         public int Value { get; set; }
     }
 }
