@@ -6,12 +6,14 @@
         xmlns:control="clr-namespace:LTEDatabase.View.Control"
         xmlns:vm="clr-namespace:LTEDatabase.ViewModel"
         xmlns:beh="clr-namespace:LTEDatabase.View.Behavior"
-        Title="Діаграми" WindowState="Maximized" WindowStyle="SingleBorderWindow" ShowInTaskbar="False" ResizeMode="CanResize">
+        Title="Діаграми" WindowState="Maximized" ShowInTaskbar="False" ResizeMode="CanResize">
     <Window.DataContext>
         <vm:ChartViewModel />
     </Window.DataContext>
     <Window.Resources>
         <Style TargetType="metro:Tile">
+            <Setter Property="Width" Value="201" />
+            <Setter Property="Height" Value="150" />
             <Setter Property="Margin" Value="10" />
             <Setter Property="BorderBrush" Value="White" />
             <Setter Property="BorderThickness" Value="1" />
@@ -30,6 +32,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -40,9 +44,17 @@
             <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
         </metro:Tile>
         <metro:Tile Grid.Row="0" Grid.Column="1" Title="Лічильники" 
-                    ToolTip="Гістограма лічильників на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;">
+                    ToolTip="Кругова діаграма лічильників на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;" Command="{Binding PieChartMeterCommand}">
+            <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
+        </metro:Tile>
+        <metro:Tile Grid.Row="0" Grid.Column="2" Title="Трансформатори струму"
+                    ToolTip="Кругова діаграма трансформаторів струму на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;" Command="{Binding PieChartTCCommand}">
+            <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
+        </metro:Tile>
+        <metro:Tile Grid.Row="0" Grid.Column="3" Title="Договори"
+                    ToolTip="Гістограма договорів на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;" Command="{Binding PieChartContractCommand}">
             <Image Source="/LTEDatabase;component/images/histogram.png" Margin="20" />
         </metro:Tile>
-        <control:Chart Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" RenderTransformOrigin="0.0,0.0" />
+        <control:Chart Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Grid.ColumnSpan="4" RenderTransformOrigin="0.0,0.0" />
     </Grid>
 </Window>
