@@ -43,8 +43,28 @@
                             Command="{Binding PieChartTCCommand}">
                     <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
                 </metro:Tile>
-                <metro:Tile Title="Договори" ToolTip="Гістограма договорів на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;" 
+                <metro:Tile Title="Договори" ToolTip="Кругова діаграма договорів на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;" 
                             Command="{Binding PieChartContractCommand}">
+                    <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
+                </metro:Tile>
+                <metro:Tile Title="Субабоненти" ToolTip="Кругова діаграма субабонентів на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;" 
+                            Command="{Binding PieChartSubabonentCommand}">
+                    <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />      
+                </metro:Tile>
+                <metro:Tile Title="Двигуни з мокрим ротором" ToolTip="Кругова діаграма двигунів з мокрими ротором на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;" 
+                            Command="{Binding PieChartWetPumpCommand}">
+                    <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
+                </metro:Tile>
+                <metro:Tile Title="Об'єкти по районах" ToolTip="Кругова діаграма об'єктів ЛМКП &quot;Львівтеплоенерго&quot; розділених по районах" 
+                            Command="{Binding PieChartObjectRegionCommand}">
+                    <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
+                </metro:Tile>
+                <metro:Tile Title="Об'єкти по категоріях" ToolTip="Кругова діаграма об'єктів ЛМКП &quot;Львівтеплоенерго&quot; розділених по категоріях надійності електропостачання" 
+                            Command="{Binding PieChartObjectCategoryCommand}">
+                    <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
+                </metro:Tile>
+                <metro:Tile Title="Об'єкти по типах" ToolTip="Гістограма об'єктів ЛМКП &quot;Львівтеплоенерго&quot; розділених по типах" 
+                            Command="{Binding PieChartObjectTypeCommand}">
                     <Image Source="/LTEDatabase;component/images/histogram.png" Margin="20" />
                 </metro:Tile>
             </WrapPanel>
