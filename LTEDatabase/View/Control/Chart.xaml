@@ -45,7 +45,7 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" FontSize="26" FontStyle="Italic" 
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,5,5,20" HorizontalAlignment="Center" FontSize="26" FontStyle="Italic" 
                    Text="{Binding Path=TitleChart}" />
             <lvc:PieChart Grid.Row="1" Grid.Column="0" Margin="10" HoverPushOut="20" LegendLocation="Bottom"
                           Series="{Binding Data}">
@@ -59,7 +59,7 @@
                 </Style>
             </lvc:PieChart.Resources>
             <lvc:PieChart.ChartLegend>
-                <lvc:DefaultLegend BulletSize="20" Background="Gray" Margin="5" />
+                <lvc:DefaultLegend BulletSize="20" Background="Gray" Margin="5,20,5,5" />
             </lvc:PieChart.ChartLegend>
             <lvc:PieChart.DataTooltip>
                 <lvc:DefaultTooltip BulletSize="20" Background="Gray" Opacity="0.8" CornerRadius="5" SelectionMode="OnlySender" />
