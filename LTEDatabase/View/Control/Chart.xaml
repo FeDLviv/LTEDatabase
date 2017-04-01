@@ -46,8 +46,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,5,5,20" HorizontalAlignment="Center" FontSize="26" FontStyle="Italic" 
-                   Text="{Binding Path=TitleChart}" />
-            <lvc:PieChart Grid.Row="1" Grid.Column="0" Margin="10" HoverPushOut="20" LegendLocation="Bottom"
+                   Foreground="{DynamicResource AccentColorBrush}" Text="{Binding Path=TitleChart}" />
+        <lvc:PieChart Grid.Row="1" Grid.Column="0" Margin="10" HoverPushOut="20" LegendLocation="Bottom"
                           Series="{Binding Data}">
             <lvc:PieChart.Resources>
                 <Style TargetType="lvc:PieSeries">

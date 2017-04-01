@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 
 using System.Windows.Input;
+using System.Windows.Media;
 using LiveCharts;
 using LiveCharts.Wpf;
 
@@ -255,7 +256,7 @@ namespace LTEDatabase.ViewModel
                 }
                 if (count > 0)
                 {
-                    Data.Add(new PieSeries() { Title = "решта", Values = new ChartValues<int> { count }, PushOut = 15 });
+                    Data.Add(new PieSeries() { Title = "решта", Values = new ChartValues<int> { count }, PushOut = 15, Fill=Brushes.Green, Stroke=Brushes.LightGray });
                 }
                 ShowLabel = Data.Count <= LIMIT;
             }
