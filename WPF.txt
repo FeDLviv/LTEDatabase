@@ -1,8 +1,8 @@
-XAML (разметка)
+﻿XAML (разметка)
 
 BINDING (Source, ElementName, Path, BindingMode, UpdateSourceTrigger, TargetNullValue, RelativeSource, ValidationRules, ValidatesOnExceptions, ValidatesOnDataErrors, NotifyOnTargetUpdated, NotifyOnSourceUpdated, StringFormat) 
 	    (IValueConverter) 
-	    (CompositeCollection, MultiBinding, PriorityBinding)
+	    (MultiBinding, CompositeCollection, PriorityBinding)
 	    (привязка)
 
 DEPENDENCYPROPERTY (INotifyPropertyChanged, DependencyObject) 
@@ -22,7 +22,7 @@ STYLE (x:Key, TargetType, BasedOn)
 RESOURCES
 
 CONTROL(ContentControl, ItemsControl) 
-	   (однодетные элементы управления, многодетные элементы управления, диапазонные элементы управления, все остальное)
+       (однодетные элементы управления, многодетные элементы управления, диапазонные элементы управления, все остальное)
 	   
 TEMPLATE (ControlTemplate, DataTemplate)
 		 (ContentTemplate, ItemTemplate) 
