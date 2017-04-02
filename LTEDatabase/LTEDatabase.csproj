@@ -156,6 +156,9 @@
     <Compile Include="View\Control\Chart.xaml.cs">
       <DependentUpon>Chart.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Control\MotorDataGrid.xaml.cs">
+      <DependentUpon>MotorDataGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Control\MotorRowDetails.xaml.cs">
       <DependentUpon>MotorRowDetails.xaml</DependentUpon>
     </Compile>
@@ -177,6 +180,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Control\Chart.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Control\MotorDataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

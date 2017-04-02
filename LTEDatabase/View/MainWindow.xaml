@@ -20,56 +20,36 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Window.Resources>
-        <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
-            <Setter Property="metro:ControlsHelper.HeaderFontSize" Value="14" />
-        </Style>
-        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SquareButtonStyle}" />
-        <Style TargetType="{x:Type GridSplitter}">
-            <Setter Property="BorderBrush" Value="Black" />
-            <Setter Property="BorderThickness" Value="1" />
-        </Style>
-        <Style TargetType="{x:Type DataGrid}">
-            <Style.Triggers>
-                <EventTrigger RoutedEvent="Binding.TargetUpdated">
-                    <EventTrigger.Actions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
-                                                 To="0.5" Duration="00:00:00" />                               
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="00:00:01" />
-                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[1].X"
-                                                 From="{x:Static SystemParameters.PrimaryScreenWidth}" To="0" Duration="00:00:0.5" />
-                                <DoubleAnimation BeginTime="00:00:00.6" Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY"
-                                                 To="1.0" Duration="00:00:00.4" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </EventTrigger.Actions>
-                </EventTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style TargetType="{x:Type DataGridCell}">
-            <Style.Triggers>
-                <Trigger Property="DataGridCell.IsSelected" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <DataTemplate x:Key="objectTemplate">
-            <StackPanel Orientation="Horizontal">
-                <Image Stretch="None" Source="/LTEDatabase;component/images/object.png" />
-                <TextBlock Margin="5, 0, 15, 0" VerticalAlignment="Center" Text="{Binding address}" />
-            </StackPanel>
-        </DataTemplate>
-        <HierarchicalDataTemplate x:Key="typeTemplate" ItemTemplate="{StaticResource objectTemplate}" ItemsSource="{Binding Objects}">
-            <TextBlock Text="{Binding Name}"/>
-        </HierarchicalDataTemplate>
-        <HierarchicalDataTemplate x:Key="regionTemplate" ItemTemplate="{StaticResource typeTemplate}" ItemsSource="{Binding Types}">
-            <TextBlock Text="{Binding Name}" />
-        </HierarchicalDataTemplate>
-        <converter:PhaseConverter x:Key="PhaseConverter" />
-        <converter:SpeedConverter x:Key="SpeedConverter" />
-        <converter:ForegroundNullConverter x:Key="ForegroundNullConverter" />
-        <converter:VisibilityConverter x:Key="VisibilityConverter" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+                <Setter Property="metro:ControlsHelper.HeaderFontSize" Value="14" />
+            </Style>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource SquareButtonStyle}">
+                <Setter Property="HorizontalAlignment" Value="Left" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5" />
+            </Style>
+            <Style TargetType="{x:Type GridSplitter}">
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+            <DataTemplate x:Key="objectTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Image Stretch="None" Source="/LTEDatabase;component/images/object.png" />
+                    <TextBlock Margin="5, 0, 15, 0" VerticalAlignment="Center" Text="{Binding address}" />
+                </StackPanel>
+            </DataTemplate>
+            <HierarchicalDataTemplate x:Key="typeTemplate" ItemTemplate="{StaticResource objectTemplate}" ItemsSource="{Binding Objects}">
+                <TextBlock Text="{Binding Name}"/>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate x:Key="regionTemplate" ItemTemplate="{StaticResource typeTemplate}" ItemsSource="{Binding Types}">
+                <TextBlock Text="{Binding Name}" />
+            </HierarchicalDataTemplate>
+            <converter:VisibilityConverter x:Key="VisibilityConverter" />
+        </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -120,102 +100,50 @@
             </TabControl>
             <Border Grid.Row="1" BorderThickness="1" BorderBrush="LightGray">
                 <StackPanel Orientation="Horizontal">
-                    <Button HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" ToolTip="Діаграми" 
-                            Command="{Binding ChartCommand}">
-                        <Image Width="32" Height="32" Source="/LTEDatabase;component/images/chart.png" />
+                    <Button ToolTip="SQL запити" >
+                        <Rectangle Width="32" Height="32" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{StaticResource appbar_database}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
                     </Button>
-                    <Button HorizontalAlignment="Left" Margin="5" VerticalAlignment="Center" ToolTip="Оновлення даних" 
-                            Command="{Binding UpdateObjectsCommand}">
-                        <Image Width="32" Height="32" Source="/LTEDatabase;component/images/reload.png" />
+                    <Button ToolTip="Діаграми" Command="{Binding ChartCommand}">
+                        <Rectangle Width="32" Height="32" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{StaticResource appbar_graph_histogram}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                    <Button ToolTip="Оновлення даних" Command="{Binding UpdateObjectsCommand}">
+                        <Rectangle Width="32" Height="32" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{DynamicResource appbar_refresh}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                    <Button ToolTip="Налаштування" >
+                        <Rectangle Width="32" Height="32" Fill="{Binding Path=Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Button}}}">
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Visual="{StaticResource appbar_settings}" />
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
                     </Button>
                 </StackPanel>
             </Border>
         </Grid>
         <GridSplitter Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" Width="5" HorizontalAlignment="Center" />
         <Grid Grid.Row="0"  Grid.Column="2" Visibility="{Binding Path=SelectedObject, Converter={StaticResource VisibilityConverter}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock x:Name="TextObject" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16">
+            <TextBlock x:Name="TextObject" Grid.Row="0" HorizontalAlignment="Center" FontWeight="Bold" FontSize="16">
                 <Run Text="{Binding Path=SelectedObject.type}" />
                 <Run Text=" " />
                 <Run Text="{Binding Path=SelectedObject.address}" />
             </TextBlock>
-            <DataGrid x:Name="DataGridObject" Grid.Row="1" Grid.Column="0" AlternatingRowBackground = "LightGray" 
-                      AlternationCount = "2" FrozenColumnCount="4" AutoGenerateColumns="False" IsReadOnly="True" 
-                      ScrollViewer.CanContentScroll="False" AreRowDetailsFrozen="True" RowDetailsVisibilityMode="Collapsed" 
-                      RenderTransformOrigin="0.5,0.5"
-                      ItemsSource="{Binding Path=Motors, NotifyOnTargetUpdated=True}"  
-                      Visibility="{Binding Path=Motors, Converter={StaticResource VisibilityConverter}}">
-                <DataGrid.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </DataGrid.RenderTransform>
-                <DataGrid.InputBindings>
-                    <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding Path=ShowDetailsCommand}" 
-                                  CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" />
-                </DataGrid.InputBindings>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding idMotorsLTE}" Header="ID" />        
-                    <DataGridTextColumn Binding="{Binding missions.mission}" Header="ПРИЗНАЧЕННЯ" />
-                    <DataGridTextColumn Binding="{Binding series}" Header="СЕРІЯ ДВИГУНА" />
-                    <DataGridTextColumn Binding="{Binding type}" Header="ТИП ДВИГУНА" />
-                    <DataGridTextColumn Binding="{Binding power, TargetNullValue=NULL}" Header="P (кВт)">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Foreground" Value="{Binding power, Converter={StaticResource ForegroundNullConverter}}"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding speed, Converter={StaticResource SpeedConverter}, TargetNullValue=NULL}" Header="ОБЕРТИ">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Foreground" Value="{Binding speed, Converter={StaticResource ForegroundNullConverter}}"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding threePhase, TargetNullValue=NULL, Converter={StaticResource PhaseConverter}}" Header="КІЛЬКІСТЬ ФАЗ">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Foreground" Value="{Binding threePhase, Converter={StaticResource ForegroundNullConverter}}"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding inventory, TargetNullValue=NULL}" Header="ІНВЕНТАРНИЙ НОМЕР">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Foreground" Value="{Binding inventory, Converter={StaticResource ForegroundNullConverter}}"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding bearing1, TargetNullValue=NULL}" Header="ПІДШИПНИК (ПЕРЕД/НИЗ)">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Foreground" Value="{Binding bearing1, Converter={StaticResource ForegroundNullConverter}}"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding bearing2, TargetNullValue=NULL}" Header="ПІДШИПНИК (ЗАД/ВЕРХ)">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Foreground" Value="{Binding bearing2, Converter={StaticResource ForegroundNullConverter}}"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                </DataGrid.Columns>
-                <DataGrid.RowDetailsTemplate>
-                    <DataTemplate>
-                        <control:MotorRowDetails />
-                    </DataTemplate>
-                </DataGrid.RowDetailsTemplate>
-            </DataGrid>           
+            <control:MotorDataGrid x:Name="DataGridObject" Grid.Row="1" />
         </Grid>
         <GridSplitter Grid.Row="1" Grid.Column="2" Height="5" HorizontalAlignment="Stretch" />
         <control:MyProgressBar Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="3" Width="80" Height="80" />
