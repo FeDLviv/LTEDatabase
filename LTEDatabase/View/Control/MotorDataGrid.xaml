@@ -33,13 +33,16 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
         <converter:PhaseConverter x:Key="PhaseConverter" />
         <converter:SpeedConverter x:Key="SpeedConverter" />
         <converter:ForegroundNullConverter x:Key="ForegroundNullConverter" />
         <converter:VisibilityConverter x:Key="VisibilityConverter" />
     </UserControl.Resources>
     <Grid>
-        <DataGrid x:Name="DataGridObject" AlternationCount = "2" AlternatingRowBackground = "LightGray" FrozenColumnCount="4" 
+        <DataGrid x:Name="DataGridObject" AlternationCount="2" AlternatingRowBackground="LightGray" FrozenColumnCount="4" 
                   AutoGenerateColumns="False" ScrollViewer.CanContentScroll="False" RowDetailsVisibilityMode="Collapsed" 
                   AreRowDetailsFrozen="True" IsReadOnly="True" RenderTransformOrigin="0.5,0.5"
                   ItemsSource="{Binding Path=Motors, NotifyOnTargetUpdated=True}"  
@@ -55,14 +58,27 @@
                                   CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" />
             </DataGrid.InputBindings>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding idMotorsLTE}" Header="ID" />
+                <DataGridTextColumn Binding="{Binding idMotorsLTE}" Header="ID">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding missions.mission}" Header="ПРИЗНАЧЕННЯ" />
-                <DataGridTextColumn Binding="{Binding series}" Header="СЕРІЯ ДВИГУНА" />
-                <DataGridTextColumn Binding="{Binding type}" Header="ТИП ДВИГУНА" />
+                <DataGridTextColumn Binding="{Binding series}" Header="СЕРІЯ ДВИГУНА">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding type}" Header="ТИП ДВИГУНА" FontWeight="Bold" />
                 <DataGridTextColumn Binding="{Binding power, TargetNullValue=NULL}" Header="P (кВт)">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Foreground" Value="{Binding power, Converter={StaticResource ForegroundNullConverter}}"/>
+                            <Setter Property="HorizontalAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -70,6 +86,7 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Foreground" Value="{Binding speed, Converter={StaticResource ForegroundNullConverter}}"/>
+                            <Setter Property="HorizontalAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -77,6 +94,7 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Foreground" Value="{Binding threePhase, Converter={StaticResource ForegroundNullConverter}}"/>
+                            <Setter Property="HorizontalAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -84,6 +102,7 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Foreground" Value="{Binding inventory, Converter={StaticResource ForegroundNullConverter}}"/>
+                            <Setter Property="HorizontalAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -91,6 +110,7 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Foreground" Value="{Binding bearing1, Converter={StaticResource ForegroundNullConverter}}"/>
+                            <Setter Property="HorizontalAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
@@ -98,6 +118,7 @@
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Foreground" Value="{Binding bearing2, Converter={StaticResource ForegroundNullConverter}}"/>
+                            <Setter Property="HorizontalAlignment" Value="Center" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
