@@ -109,7 +109,7 @@ namespace LTEDatabase.ViewModel
             }
         }
 
-        private Func<ChartPoint, string> label = (chartPoint) => { return string.Format("({0} з {1} )", chartPoint.Y, chartPoint.Sum); };
+        private Func<ChartPoint, string> label = (chartPoint) => { return chartPoint.SeriesView.Title; };
         public Func<ChartPoint, string> Label
         {
             get { return label; }

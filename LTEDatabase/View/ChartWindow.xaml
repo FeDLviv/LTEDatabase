@@ -69,6 +69,6 @@
                 </metro:Tile>
             </WrapPanel>
         </ScrollViewer>
-        <control:Chart RenderTransformOrigin="0.0,0.0" />
+        <control:Chart RenderTransformOrigin="0.0,0.0" Margin="5" />
     </Grid>
 </Window>

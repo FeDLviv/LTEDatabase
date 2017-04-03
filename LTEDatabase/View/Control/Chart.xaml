@@ -23,6 +23,64 @@
                 <DoubleAnimation Storyboard.TargetProperty="RenderTransform.Children[0].ScaleY" To="0" Duration="00:00:00.5" />
             </Storyboard>
             <converter:VisibilityConverter x:Key="VisibilityConverter" />
+            <lvc:SharedConverter x:Key="SharedConverter" />
+            <lvc:SharedVisibilityConverter x:Key="SharedVisibilityConverter" />
+            <lvc:ParticipationVisibilityConverter x:Key="ParticipationVisibilityConverter" />
+            <BooleanToVisibilityConverter x:Key="Bvc" />
+            <ControlTemplate x:Key="ToolTipTemplate" TargetType="{x:Type lvc:DefaultTooltip}">
+                <Grid VerticalAlignment="Center" HorizontalAlignment="Center" >
+                    <Border Background="{Binding Background}" BorderThickness="1" Effect="{Binding Effect}" 
+                            CornerRadius="{Binding CornerRadius}" Width="{Binding Width}" Height="{Binding Height}" />
+                    <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}"
+                        BorderThickness="{Binding BorderThickness}" Padding="{Binding Padding}"
+                        BorderBrush="{Binding BorderBrush}" Width="{Binding Width}" Height="{Binding Height}">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Data, Converter={StaticResource SharedConverter}}" 
+                                       HorizontalAlignment="Center" FontWeight="Bold">
+                                <TextBlock.Visibility>
+                                    <MultiBinding Converter="{StaticResource SharedVisibilityConverter}">
+                                        <Binding Path="Data" />
+                                        <Binding Path="ShowTitle" />
+                                    </MultiBinding>
+                                </TextBlock.Visibility>
+                            </TextBlock>
+                            <ItemsControl ItemsSource="{Binding Data.Points}" Grid.IsSharedSizeScope="True">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="{x:Type lvc:DataPointViewModel}">
+                                        <Grid Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="Title" />
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                                <ColumnDefinition Width="Auto" SharedSizeGroup="Participation" />
+                                            </Grid.ColumnDefinitions>
+                                            <Path Width="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
+                                                  Height="{Binding BulletSize, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type UserControl}}}" 
+                                                  StrokeThickness="{Binding Series.StrokeThickness}" 
+                                                  Stroke="{Binding Series.Stroke}" Fill="{Binding Series.Fill}" 
+                                                  Stretch="Fill" Data="{Binding Series.PointGeometry}"
+                                                  Visibility="{Binding ShowSeries, ElementName=Control, Converter={StaticResource Bvc}}"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Series.Title}" 
+                                                       VerticalAlignment="Center" Margin="5 0 5 0"
+                                                       Visibility="{Binding ShowSeries, ElementName=Control, Converter={StaticResource Bvc}}"/>
+                                            <TextBlock Grid.Column="2" VerticalAlignment="Center">
+                                                <Run Text="(" />
+                                                <Run Text="{Binding ChartPoint.Instance, Mode=OneWay}" />
+                                                <Run Text="/" />
+                                                <Run Text="{Binding ChartPoint.Sum, Mode=OneWay}" />
+                                                <Run Text=")" />
+                                            </TextBlock>
+                                            <TextBlock Grid.Column="3" Text="{Binding ChartPoint.Participation, StringFormat={}{0:P}}" 
+                                                       VerticalAlignment="Center" Margin="5 0 0 0"
+                                                       Visibility="{Binding DataContext.Data, RelativeSource={RelativeSource  FindAncestor, AncestorType={x:Type StackPanel}}, Converter={StaticResource ParticipationVisibilityConverter}}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </ControlTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     <i:Interaction.Triggers>
@@ -45,10 +103,10 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,5,5,20" HorizontalAlignment="Center" FontSize="26" FontStyle="Italic" 
-                   Foreground="{DynamicResource AccentColorBrush}" Text="{Binding Path=TitleChart}" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="5,5,5,20" HorizontalAlignment="Center" FontSize="26" 
+                   FontStyle="Italic" Foreground="{DynamicResource AccentColorBrush}" Text="{Binding Path=TitleChart}" />
         <lvc:PieChart Grid.Row="1" Grid.Column="0" Margin="10" HoverPushOut="20" LegendLocation="Bottom"
-                          Series="{Binding Data}">
+                      Series="{Binding Data}">
             <lvc:PieChart.Resources>
                 <Style TargetType="lvc:PieSeries">
                     <Setter Property="DataLabels" Value="{Binding ShowLabel}" />
@@ -62,9 +120,10 @@
                 <lvc:DefaultLegend BulletSize="20" Background="Gray" Margin="5,20,5,5" />
             </lvc:PieChart.ChartLegend>
             <lvc:PieChart.DataTooltip>
-                <lvc:DefaultTooltip BulletSize="20" Background="Gray" Opacity="0.8" CornerRadius="5" SelectionMode="OnlySender" />
+                <lvc:DefaultTooltip BulletSize="20" Background="Gray" Opacity="0.8" CornerRadius="5" 
+                                    SelectionMode="OnlySender" Template="{StaticResource ToolTipTemplate}" />
             </lvc:PieChart.DataTooltip>
-            </lvc:PieChart>
+        </lvc:PieChart>
         <Button Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2" VerticalAlignment="Top" 
                 HorizontalAlignment="Left" Width="50" Height="50" Margin="5" Style="{StaticResource MetroCircleButtonStyle}" 
                 Command="{Binding ChartHiddenCommand}">
