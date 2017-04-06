@@ -1,10 +1,8 @@
-﻿using LTEDatabase.ViewModel;
-using LTEDatabase.Command;
+﻿using LTEDatabase.Command;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using System.Windows.Input;
 using System.Windows.Media;
@@ -160,7 +158,6 @@ namespace LTEDatabase.ViewModel
             //PROGRESSBAR
             
             //ЗНИКНЕННЯ ToolTip при розкритті/закритті діаграми
-            //DATALABELS ПРОБЛЕМА СУМІСНОСТІ З TOOLTIP
             //EXCEPTION SQL
             //ПРОКРУТКА КРУГОВОЇ ДІАГРАМИ
             
@@ -292,6 +289,7 @@ namespace LTEDatabase.ViewModel
         private void LoadData()
         {
             list.Clear();
+            //try catch
             list = Database.GetContext().Database.SqlQuery<ChartData>(query).ToList();
             previousFilterValue = 0;
             if (list.Count > LIMIT)
