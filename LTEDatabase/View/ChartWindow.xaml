@@ -43,12 +43,20 @@
                             Command="{Binding PieChartObjectCategoryCommand}">
                     <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
                 </metro:Tile>
+                <metro:Tile Title="Об'єкти по приєднанню" ToolTip="Кругова діаграма об'єктів ЛМКП &quot;Львівтеплоенерго&quot; розділених по типу приєднання" 
+                            Command="{Binding PieChartObjectConnectCommand}">
+                    <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
+                </metro:Tile>
                 <metro:Tile Title="Об'єкти по типах" ToolTip="Кругова діаграма об'єктів ЛМКП &quot;Львівтеплоенерго&quot; розділених по типах" 
                             Command="{Binding PieChartObjectTypeCommand}">
                     <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
                 </metro:Tile>
                 <metro:Tile Title="Субабоненти" ToolTip="Кругова діаграма субабонентів на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;" 
                             Command="{Binding PieChartSubabonentCommand}">
+                    <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
+                </metro:Tile>
+                <metro:Tile Title="Субабоненти по районах" ToolTip="Кругова діаграма субабонентів на об'єктах ЛМКП &quot;Львівтеплоенерго&quot; розділених по районах" 
+                            Command="{Binding PieChartSubabonentRegionCommand}">
                     <Image Source="/LTEDatabase;component/images/piechart.png" Margin="20" />
                 </metro:Tile>
                 <metro:Tile Title="Двигуни" ToolTip="Кругова діаграма двигунів на об'єктах ЛМКП &quot;Львівтеплоенерго&quot;" 

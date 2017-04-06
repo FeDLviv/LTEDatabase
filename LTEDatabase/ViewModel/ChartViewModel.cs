@@ -19,8 +19,10 @@ namespace LTEDatabase.ViewModel
         private const string QUERY_OBJECTCONTRACT = "SELECT IFNULL(organization, 'без договору') AS Name, COUNT(*) AS Value FROM objects WHERE type NOT IN ('склад', 'ТЕЦ', 'ТЦ') GROUP BY Name ORDER BY organization IS NULL, Value DESC;";
         private const string QUERY_OBJECTREGION = "SELECT region AS Name, COUNT(*) AS Value FROM objects WHERE type NOT IN ('склад', 'ТЕЦ', 'ТЦ') GROUP BY Name ORDER BY Value DESC;";
         private const string QUERY_OBJECTCATEGORY = "SELECT	IFNULL(category, 'невідомо') AS Name, COUNT(*) AS Value FROM objects WHERE type NOT IN ('склад', 'ТЕЦ', 'ТЦ') GROUP BY Name ORDER BY Value DESC;";
+        private const string QUERY_OBJECTCONNECT = "SELECT IFNULL(connect, 'невідомо') AS Name, COUNT(*) AS Value FROM objects WHERE type NOT IN('склад', 'ТЕЦ', 'ТЦ') GROUP BY Name ORDER BY	Value DESC;";
         private const string QUERY_OBJECTTYPE = "SELECT	type AS Name, COUNT(*) AS Value FROM objects WHERE type NOT IN ('склад', 'ТЕЦ', 'ТЦ') GROUP BY Name ORDER BY Value DESC";
         private const string QUERY_SUBABONENT = "SELECT subabonents.name AS Name, COUNT(subabonents_lte.idSubabonentsLTE) AS Value FROM subabonents RIGHT JOIN subabonents_lte USING(idSubabonents) GROUP BY Name ORDER BY Value DESC;";
+        private const string QUERY_SUBABONENTREGION = "SELECT objects.region AS Name, COUNT(*) AS Value FROM objects INNER JOIN subabonents_lte USING(idObject) GROUP BY Name ORDER BY Value DESC;";
         private const string QUERY_MOTOR = "SELECT motors_lte.series AS Name, COUNT(motors_lte.idMotorsLTE) AS Value FROM motors_lte JOIN objects USING(idObject) WHERE objects.type NOT IN ('склад', 'ТЕЦ', 'ТЦ') GROUP BY Name ORDER BY Value DESC;";
         private const string QUERY_WETPUMP = "SELECT motors_lte.series AS Name, COUNT(motors_lte.idMotorsLTE) AS Value FROM motors_lte JOIN objects USING(idObject) WHERE objects.type NOT IN ('склад', 'ТЕЦ', 'ТЦ') AND motors_lte.type REGEXP '^DAB VA +|^DAB A +|^IMPPUMPS GHN +|^LFP LESZNO [0-9]{2}P+|^Lowara EV +|^Lowara TLC +|^Lowara TCR +|^Lowara TC +|^NOCCHI R2C +|Sprut GPD +|^Viessmann +|^Grundfos MAGNA +|^Grundfos UP +|^Grundfos UPBASIC +|^Grundfos UPS +|^Grundfos UPER +|^Wilo RS +|^Wilo Star+|^Wilo TOP-+' GROUP BY Name ORDER BY Value DESC";
         private const string QUERY_METER = "SELECT meters.type AS Name, COUNT(meters_lte.idMLTE) AS Value FROM meters RIGHT JOIN meters_lte USING (idMeter) JOIN objects USING(idObject) WHERE objects.type NOT IN ('склад', 'ТЕЦ', 'ТЦ') GROUP BY Name ORDER BY Value DESC;";
@@ -28,8 +30,10 @@ namespace LTEDatabase.ViewModel
         private const string TITLE_OBJECTCONTRACT = "Об'єкти ЛМКП \"Львівтеплоенерго\" розділені по договорах";
         private const string TITLE_OBJECTREGION = "Об'єкти ЛМКП \"Львівтеплоенерго\" розділені по районах";
         private const string TITLE_OBJECTCATEGORY = "Об'єкти ЛМКП \"Львівтеплоенерго\" розділені по категоріях надійності електропостачання";
+        private const string TITLE_OBJECTCONNECT = "Об'єкти ЛМКП \"Львівтеплоенерго\" розділені по типу приєднання";
         private const string TITLE_OBJECTTYPE = "Об'єкти ЛМКП \"Львівтеплоенерго\" розділені по типах";
         private const string TITLE_SUBABONENT = "Субабоненти на об'єктах ЛМКП \"Львівтеплоенерго\"";
+        private const string TITLE_SUBABONENTREGION = "Субабоненти на об'єктах ЛМКП \"Львівтеплоенерго\" розділені по районах";
         private const string TITLE_MOTOR = "Двигуни на об'єктах ЛМКП \"Львівтеплоенерго\"";
         private const string TITLE_WETPUMP = "Двигуни з мокрим ротором на об'єктах ЛМКП \"Львівтеплоенерго\"";
         private const string TITLE_METER = "Лічильники на об'єктах ЛМКП \"Львівтеплоенерго\"";
@@ -140,8 +144,10 @@ namespace LTEDatabase.ViewModel
         public ICommand PieChartObjectContractCommand { get; set; }
         public ICommand PieChartObjectRegionCommand { get; set; }
         public ICommand PieChartObjectCategoryCommand { get; set; }
+        public ICommand PieChartObjectConnectCommand { get; set; }
         public ICommand PieChartObjectTypeCommand { get; set; }
         public ICommand PieChartSubabonentCommand { get; set; }
+        public ICommand PieChartSubabonentRegionCommand { get; set; }
         public ICommand PieChartMotorCommand { get; set; }
         public ICommand PieChartWetPumpCommand { get; set; }
         public ICommand PieChartMeterCommand { get; set; }
@@ -163,8 +169,10 @@ namespace LTEDatabase.ViewModel
             PieChartObjectContractCommand = new BaseCommand(DoPieChartObjectContractCommand);
             PieChartObjectRegionCommand = new BaseCommand(DoPieChartObjectRegionCommand);
             PieChartObjectCategoryCommand = new BaseCommand(DoPieChartObjectCategoryCommand);
+            PieChartObjectConnectCommand = new BaseCommand(DoPieChartObjectConnectCommand);
             PieChartObjectTypeCommand = new BaseCommand(DoPieChartObjectTypeCommand);
             PieChartSubabonentCommand = new BaseCommand(DoPieChartSubabonentCommand);
+            PieChartSubabonentRegionCommand = new BaseCommand(DoPieChartSubabonentRegionCommand);
             PieChartMotorCommand = new BaseCommand(DoPieChartMotorCommand);
             PieChartWetPumpCommand = new BaseCommand(DoPieChartWetPumpCommand);
             PieChartMeterCommand = new BaseCommand(DoPieChartMeterCommand);
@@ -194,6 +202,13 @@ namespace LTEDatabase.ViewModel
             LoadData();
         }
 
+        private void DoPieChartObjectConnectCommand(object obj)
+        {
+            TitleChart = TITLE_OBJECTCONNECT;
+            query = QUERY_OBJECTCONNECT;
+            LoadData();
+        }
+
         private void DoPieChartObjectTypeCommand(object obj)
         {
             TitleChart = TITLE_OBJECTTYPE;
@@ -205,6 +220,13 @@ namespace LTEDatabase.ViewModel
         {
             TitleChart = TITLE_SUBABONENT;
             query = QUERY_SUBABONENT;
+            LoadData();
+        }
+
+        private void DoPieChartSubabonentRegionCommand(object obj)
+        {
+            TitleChart = TITLE_SUBABONENTREGION;
+            query = QUERY_SUBABONENTREGION;
             LoadData();
         }
 
